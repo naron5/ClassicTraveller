@@ -13,6 +13,9 @@ executable JAR file application and add the possibility of running it as an Appl
 well.  I am not too bad with Applet GUI's but it has been some time since I played with
 an Application interface.
 
+I use Eclipse Gallileo as my IDE so if I forget to uncheck the calsspath files I 
+apologise.  Remind me and I will remove them.
+
 Cheers
 
 Mark
