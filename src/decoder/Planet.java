@@ -6,6 +6,14 @@ import java.util.Random;
  * @author markknights
  *
  */
+/**
+ * @author markknights
+ *
+ */
+/**
+ * @author markknights
+ *
+ */
 public class Planet {
 	String name, details;
 	int hexLocation;
@@ -106,47 +114,95 @@ public class Planet {
 	}
 	
 	
+	/**
+	 * @return
+	 * returns two space boolean array detailing if set to red or amber zone in that order
+	 */
 	public boolean[] getZone() {
 		return zone;
 	}
 
+	/**
+	 * @param zone
+	 * sets zones to input array.  Should be a two space array detailing red or amber zone
+	 * status in that order
+	 */
 	public void setZone(boolean[] zone) {
 		this.zone = zone;
 	}
 
+	/**
+	 * @return
+	 * returns name of planet
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @param name
+	 * sets name of planet
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return
+	 * returns hex position of planet
+	 */
 	public int getHexLocation() {
 		return hexLocation;
 	}
 
+	/**
+	 * @param hexLocation
+	 * sets the hex location of the planet
+	 */
 	public void setHexLocation(int hexLocation) {
 		this.hexLocation = hexLocation;
 	}
 
+	/**
+	 * @return
+	 * Returns the UPP of the planet
+	 */
 	public UniversalPlanetaryProfile getProfile() {
 		return profile;
 	}
 
+	/**
+	 * @param profile
+	 * Sets the UPP of the planet to the passed parameter
+	 */
 	public void setProfile(UniversalPlanetaryProfile profile) {
 		this.profile = profile;
 	}
+	
+	/**
+	 * @return
+	 * Returns the String details of the planet
+	 */
 	public String getDetails() {
 		return details;
 	}
 
+	/**
+	 * @param details
+	 * Sets the details of the planet to the entered string
+	 */
 	public void setDetails(String details) {
 		this.details = details;
 	}
 	
+	/**
+	 * @param s
+	 * 
+	 * Used to insert debugging comments for myself
+	 */
 	private void debug(String s){
-		System.out.println(s);
+		if(debug)
+			System.out.println(s);
 	}
 
 	
