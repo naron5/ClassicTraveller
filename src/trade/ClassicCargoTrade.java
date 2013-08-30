@@ -56,9 +56,10 @@ public class ClassicCargoTrade {
 	 * incidental at 2
 	 */
 	private int[] getCargoTonnage() {
-		int[] cargoAmount = new int[3];
-		int population = from.getProfile().getPop();
+		int[] cargoAmount = new int[3];				//for return type
+		int population = from.getProfile().getPop();//for population switch statement
 		
+		//Switch statement based on population of planet for cargo availability
 		switch(population){
 		case 0:
 			for(int i = 0; i < cargoAmount.length; i++){
@@ -147,6 +148,15 @@ public class ClassicCargoTrade {
 				cargoAmount[i] = 0;
 			}	
 		}
+		
+		//make sure there are no minus cargo results
+		for(int i = 0; i < cargoAmount.length; i++){
+			if(cargoAmount[i] < 0){
+				cargoAmount[i] = 0;
+			}
+		}
+		
+		//return
 		return cargoAmount;
 	}
 
