@@ -15,7 +15,6 @@ import dieRoller.DiceGenerator;
 public class ClassicTravellerPassenger {
 	//class variables
 	boolean debug = false;
-	Planet from, to;
 	int high, middle, low, dieMod;
 	int passOnOffer[] = new int[3];
 	Random generator = new Random();
@@ -28,21 +27,18 @@ public class ClassicTravellerPassenger {
 	 * Details the availability of passengers needing travel taking into account
 	 * the to and from for planets
 	 */
-	public ClassicTravellerPassenger(Planet exporter, Planet importer){
-		from = exporter;
-		to = importer;
-		
+	public ClassicTravellerPassenger(Planet from, Planet to){
 		high = 0;
 		middle = 0;
 		low = 0;
 		
-		if(importer.getZone()[0]){
+		if(to.getZone()[0]){
 			 middle = -1;
 			 low = -1;
 		}
 		
-		getDieMod();
-		passOnOffer = getPassengers();
+		getDieMod(from, to);
+		passOnOffer = getPassengers(from);
 	}
 
 	/**
@@ -50,7 +46,7 @@ public class ClassicTravellerPassenger {
 	 * 
 	 * returns a 3 space integer array.  High space 0, middle space 1 and low space 2
 	 */
-	private int[] getPassengers() {
+	private int[] getPassengers(Planet from) {
 		int[] passengers = new int[3];					// this for the return
 		int population = from.getProfile().getPop();	//Planet population for switch
 		int temp = 0;									//To ensure it is a positive number
@@ -307,7 +303,7 @@ public class ClassicTravellerPassenger {
 	/**
 	 * 
 	 */
-	private void getDieMod() {
+	private void getDieMod(Planet from, Planet to) {
 		if(to.getProfile().getPop() < 5){
 			dieMod -= 3;
 		}else if(to.getProfile().getPop()>7){

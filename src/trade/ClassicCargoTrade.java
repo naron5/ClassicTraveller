@@ -16,7 +16,6 @@ import dieRoller.DiceGenerator;
 public class ClassicCargoTrade {
 	//class variables
 	boolean debug = false;
-	Planet from, to;
 	int major, minor, incidental, dieMod;
 	int cargoMult[] = {10, 5};
 	int cargoOnOffer[] = new int[3];
@@ -24,29 +23,27 @@ public class ClassicCargoTrade {
 	DiceGenerator sixer = new DiceGenerator();
 	
 	/**
-	 * @param exporter
-	 * @param importer
+	 * @param from
+	 * @param to
 	 * 
 	 * Create for cargo trade
 	 */
-	public ClassicCargoTrade(Planet exporter, Planet importer){
-		from = exporter;
-		to = importer;
+	public ClassicCargoTrade(Planet from, Planet to){
 		
 		major = 0;
 		minor = 0;
 		incidental = 0;
 		
-		if(exporter.getZone()[0]){
+		if(from.getZone()[0]){
 			 major = -1;
 			 minor = -1;
 			 incidental = -1;
-		 }else if(exporter.getZone()[1]){
+		 }else if(from.getZone()[1]){
 			 major = -1;
 		 }
 		
-		getDieMod();
-		cargoOnOffer = getCargoTonnage();
+		getDieMod(from, to);
+		cargoOnOffer = getCargoTonnage(from);
 	}
 	
 	
@@ -55,7 +52,7 @@ public class ClassicCargoTrade {
 	 * returns 3 position integer array advising amount of tonnage in cargo for Major at 0, Minor at 1 and 
 	 * incidental at 2
 	 */
-	private int[] getCargoTonnage() {
+	private int[] getCargoTonnage(Planet from) {
 		int[] cargoAmount = new int[3];				//for return type
 		int population = from.getProfile().getPop();//for population switch statement
 		
@@ -164,7 +161,7 @@ public class ClassicCargoTrade {
 	/**
 	 * Determines the Die Modifier for the check based on destination world
 	 */
-	private void getDieMod() {
+	private void getDieMod(Planet from, Planet to) {
 		if(to.getProfile().getPop() < 5){
 			dieMod -= 4;
 		}else if(to.getProfile().getPop()>7){
