@@ -116,10 +116,22 @@ public class ClassicSpeculative {
 		type = GOODS[choice];
 		basePrice = BASEPRICE[choice];
 		
-		//Die mod for purchase
+		//Die mod for purchase inclusive of population mods
 		for(int i = 0; i < from.getProfile().getTradeClassifications().length; i++){
 			if(from.getProfile().getTradeClassifications()[i]){
 				dieModPur += purchaseDM[choice][i];
+			}
+			if(from.getProfile().getPop() > 8){
+				dieModPur += 6;
+			}
+			else if(from.getProfile().getPop() < 6){
+				dieModPur -= 6;
+			}
+			
+			if(dieModPur < 0){
+				dieModPur = 0;
+			}else if(dieModPur > 35){
+				dieModPur = 35;
 			}
 		}
 		
@@ -132,5 +144,91 @@ public class ClassicSpeculative {
 		
 		//quantity
 		number = quantity[choice];
+	}
+	
+	/**
+	 * @param splitCargo
+	 * @param diceThrow
+	 * @param quantity
+	 * @return
+	 * 
+	 * Returns the purchase price for the goods
+	 */
+	public int finalPurchasePrice(boolean splitCargo, int diceThrow, int quantity){
+		int purchasePrice = 0;
+		double amount = basePrice;
+		double[] multiplier = {0.4, 0.5, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.5, 1.7, 2, 3, 4}; //Actual value table
+		
+		diceThrow += dieModPur;
+		
+		//ensure maximum and minimum is adhered to
+		if(diceThrow < 0){
+			diceThrow = 0;
+		}else if(diceThrow >= multiplier.length){
+			diceThrow = multiplier.length - 1;
+		}
+		
+		amount *= multiplier[diceThrow];
+		
+		//1% processing fee if the crew did not take the full cargo offered
+		if(splitCargo){
+			amount = amount + (amount * 0.01);
+		}
+		
+		purchasePrice = (int) amount * quantity;
+		
+		return purchasePrice;
+	}
+	
+	/**
+	 * @param diceThrow
+	 * @param bribery
+	 * @param admin
+	 * @param broker
+	 * @param diceThrow
+	 * @return
+	 * 
+	 * returns a two space int array.  the first array position details the net sale amount, the second array
+	 * position details broker fees if a broker was used
+	 */
+	public int[] finalSalePrice(int diceThrow, int bribery, int admin, int broker, int quantity){
+		int salePrice[] = new int[2];
+		double temp = 0;
+		boolean brokered = false;
+		double amount = basePrice;
+		double[] multiplier = {0.4, 0.5, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.5, 1.7, 2, 3, 4}; //Actual value table
+		
+		if(bribery > 0){
+			dieModSell += bribery;
+		}
+		if(admin > 0){
+			dieModSell += admin;
+		}
+		if(broker > 0){
+			brokered = true;
+			dieModSell += broker;
+		}
+		
+		if(diceThrow < 0){
+			diceThrow = 0;
+		}else if(diceThrow >= multiplier.length){
+			diceThrow = multiplier.length - 1;
+		}
+		
+		amount *= multiplier[diceThrow];
+		amount *= quantity;
+		
+		if(brokered){
+			if(broker > 4){
+				broker = 4;
+			}
+			temp = amount * ((double) broker * 0.05);
+			salePrice[1] = (int) temp;
+		}
+		
+		temp = amount - temp;
+		salePrice[0] = (int) temp;
+		
+		return salePrice;
 	}
 }
