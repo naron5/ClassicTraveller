@@ -5,11 +5,15 @@
  */
 package decoder;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.yaml.snakeyaml.Yaml;
 
 import util.DiceGenerator;
 
@@ -19,6 +23,7 @@ public class UniversalPlanetaryProfile {
 	Starport starport;
 	boolean navy, scout, gg;
 	String description;
+	private static Map<String, Object> propertyMap;
 
 	boolean debug = false;
 	/*
@@ -27,22 +32,8 @@ public class UniversalPlanetaryProfile {
 
 	Set<TradeClassifications> tradeClassifications = new HashSet<TradeClassifications>();
 
-	static final String[] LAW = {
-			"No prohibitions.",
-			"Body pistols undetectable by standard detectors, explosives (bombs, grenades), and "
-					+ "poison gas prohibited.",
-			"Portable energy weapons (laser carbine, laser rifle) prohibited. Ship's gunnery not affected.",
-			"Weapons of a strict military nature (machine guns, automatic rifles) prohibited.",
-			"Light assault weapons machineguns)prohibited.",
-			"Personal concealable firearms (such as pistols and revolvers) prohibited.",
-			"Most firearms (all except shotguns) prohibited. "
-					+ "The carrying of any type of weapon openly is discouraged.",
-			"Shotguns are prohibited.",
-			"Long bladed weapons (all but daggers) "
-					+ "are controlled, and open poss- ession is prohibited.",
-			"Possession of any weapon outside one's residence is prohibited." };
-
 	public UniversalPlanetaryProfile() {
+		loadProperties();
 		starport = getStarport(DiceGenerator.rollDice(2, 6));
 		planSize = DiceGenerator.rollDiceWithModifier(2, 6, -2);
 		if (planSize == 0) {
@@ -80,7 +71,7 @@ public class UniversalPlanetaryProfile {
 			scout = true;
 		}
 
-		if (DiceGenerator.rollDice(1, 2) % 2 == 0) {
+		if (util.DiceGenerator.rollDice(1, 2) % 2 == 0) {
 			gg = true;
 		}
 		determineTradeClass();
@@ -92,6 +83,8 @@ public class UniversalPlanetaryProfile {
 			int planetAtmosphere, int hydroPercent, int population,
 			int planetGovernment, int law, int techLevel, boolean navalBase,
 			boolean scoutBase, boolean gasGiant) {
+
+		loadProperties();
 		starport = starportType;
 		planSize = planetSize;
 		planAtmos = planetAtmosphere;
@@ -107,6 +100,24 @@ public class UniversalPlanetaryProfile {
 		determineTradeClass();
 		description = printPlanetaryData();
 		debug(description);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static void loadProperties() {
+		if (propertyMap != null)
+			return;
+
+		InputStream input;
+		try {
+			input = new FileInputStream(new File(
+					"src/properties/UniversalPlanetaryProfile.yml"));
+			Yaml yaml = new Yaml();
+			propertyMap = (Map<String, Object>) yaml.load(input);
+		} catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -186,7 +197,7 @@ public class UniversalPlanetaryProfile {
 		planet.append(": ");
 		planet.append(getPlanGovString());
 		planet.append("\n");
-		
+
 		// Law Level
 		planet.append(Integer.toHexString(lawLevel).toUpperCase());
 		planet.append(": ");
@@ -239,11 +250,10 @@ public class UniversalPlanetaryProfile {
 			classifications.add("Poor.");
 
 		Iterator<String> iter = classifications.iterator();
-		
-		while(iter.hasNext())
-		{
+
+		while (iter.hasNext()) {
 			planet.append(iter.next());
-			if(!iter.hasNext()){
+			if (!iter.hasNext()) {
 				break;
 			}
 			planet.append(",");
@@ -367,8 +377,8 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getSizeString() {
-		return String.format("%d miles (%d km)", planSize * 1000,
-				planSize * 1000 * 1.6);
+		return String.format((String) propertyMap.get("PlanetSize"),
+				planSize * 1000, planSize * 1000 * 1.6);
 	}
 
 	public void setPlanSize(int planSize) {
@@ -380,49 +390,9 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getPlanAtmosString() {
-		String rv = "";
-		switch (planAtmos) {
-		case 0:
-			rv = "No atmosphere.";
-			break;
-		case 1:
-			rv = "Trace.";
-			break;
-		case 2:
-			rv = "Very thin, tainted.";
-			break;
-		case 3:
-			rv = "Very thin.";
-			break;
-		case 4:
-			rv = "Thin, tainted.";
-			break;
-		case 5:
-			rv = "Thin.";
-			break;
-		case 6:
-			rv = "Standard";
-			break;
-		case 7:
-			rv = "Standard, tainted";
-			break;
-		case 8:
-			rv = "Dense.";
-			break;
-		case 9:
-			rv = "Dense, tainted.";
-			break;
-		case 10:
-			rv = "Exotic.";
-			break;
-		case 11:
-			rv = "Corrosive.";
-			break;
-		case 12:
-			rv = "Insidious.";
-			break;
-		}
-		return rv;
+		String[] atmosArray = (String[]) propertyMap.get("Atmosphere");
+
+		return atmosArray[planAtmos - 1];
 	}
 
 	public void setPlanAtmos(int planAtmos) {
@@ -455,55 +425,8 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getPopString() {
-		/*
-		 * static final String[] POPULATION = { "No inhabitants.",
-		 * "Tens of inhabitants.", "Hundreds of inhabitants.",
-		 * "Thousands of inhabitants.", "Tens of thousands.",
-		 * "Hundreds of thousands.", "Millions of inhabitants.",
-		 * "Tens of millions.", "Hundreds of millions.",
-		 * "Billions of inhabitants.", "Tens of billions." };
-		 */
-		String rv;
-		switch (pop) {
-		case 0:
-			rv = "No inhabitants.";
-			break;
-		case 1:
-			rv = "Tens of inhabitants.";
-			break;
-		case 2:
-			rv = "Hundreds of inhabitants.";
-			break;
-		case 3:
-			rv = "Thousands of inhabitants.";
-			break;
-		case 4:
-			rv = "Tens of thousands.";
-			break;
-		case 5:
-			rv = "Hundreds of thousands.";
-			break;
-		case 6:
-			rv = "Millions of inhabitants.";
-			break;
-		case 7:
-			rv = "Tens of millions.";
-			break;
-		case 8:
-			rv = "Hundreds of millions.";
-			break;
-		case 9:
-			rv = "Billions of inhabitants.";
-			break;
-		case 10:
-			rv = "Tens of billions.";
-			break;
-		default:
-			rv = "";
-			break;
-
-		}
-		return rv;
+		String[] popArray = (String[]) propertyMap.get("Population");
+		return popArray[pop - 1];
 	}
 
 	public void setPop(int pop) {
@@ -515,54 +438,8 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getPlanGovString() {
-		String rv;
-		switch (planGov) {
-		case 0:
-			rv = "No government structure. In many cases, family bonds predominate.";
-			break;
-		case 1:
-			rv = "Company/Corporation. Government by a company managerial elite; citizens are company employees.";
-			break;
-		case 2:
-			rv = "Participating Democracy. Government by advice and consent of the citizen.";
-			break;
-		case 3:
-			rv = "Self-Perpetuating Oligarchy. Government by a restricted minority, with little or no input from the masses.";
-			break;
-		case 4:
-			rv = "Representative Democracy. Government by elected representatives.";
-			break;
-		case 5:
-			rv = "Feudal Technocracy. Government by specific individuals for those who agree to be ruled. Relationships are based on the performance of technical activities which are mutually beneficial.";
-			break;
-		case 6:
-			rv = "Captive Government. Government by an imposed leadership answerable to an outside group. A colony or conquered area.";
-			break;
-		case 7:
-			rv = "Balkanization. No central ruling authority exists; rival governments compete for control.";
-			break;
-		case 8:
-			rv = "Civil Service Bureaucracy. Government by agencies employing individuals selected for their expertise.";
-			break;
-		case 9:
-			rv = "Impersonal Bureaucracy. Government by agencies which are insulated from the governed.";
-			break;
-		case 10:
-			rv = "Charismatic Dictator. Government by a single leader enjoying the confidence of the citizens.";
-			break;
-		case 11:
-			rv = "Non-Charismatic Leader. A previous charismatic dictatar has been replaced by a leader through normal channels.";
-			break;
-		case 12:
-			rv = "Charismatic Oligarchy. Government by a select group, organization, or class enjoying the overwhelming confidence of the citizenry.";
-			break;
-		case 13:
-			rv = "Religious Dictatorship. Government by a religious organization without regard to the specific needs of the citizenry.";
-		default:
-			rv = "";
-			break;
-		}
-		return rv;
+		String[] govArray = (String[]) propertyMap.get("Government");
+		return govArray[planGov - 1];
 	}
 
 	public void setPlanGov(int planGov) {
@@ -574,52 +451,8 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getLawLevelString() {
-		String rv;
-		switch (lawLevel) {
-		case 0:
-			rv = "No prohibitions.";
-			break;
-
-		case 1:
-			rv = "Body pistols undetectable by standard detectors, explosives (bombs, grenades), and poison gas prohibited.";
-			break;
-
-		case 2:
-			rv = "Portable energy weapons (laser carbine, laser rifle) prohibited. Ship's gunnery not affected.";
-			break;
-
-		case 3:
-			rv = "Weapons of a strict military nature (machine guns, automatic rifles) prohibited.";
-			break;
-
-		case 4:
-			rv = "Light assault weapons machineguns)prohibited.";
-			break;
-
-		case 5:
-			rv = "Personal concealable firearms (such as pistols and revolvers) prohibited.";
-			break;
-
-		case 6:
-			rv = "Most firearms (all except shotguns) prohibited. The carrying of any type of weapon openly is discouraged.";
-			break;
-
-		case 7:
-			rv = "Shotguns are prohibited.";
-			break;
-
-		case 8:
-			rv = "Long bladed weapons (all but daggers) are controlled, and open poss- ession is prohibited.";
-			break;
-
-		case 9:
-			rv = "Possession of any weapon outside one's residence is prohibited.";
-			break;
-		default:
-			rv = "";
-			break;
-		}
-		return rv;
+		String[] lawArray = (String[]) propertyMap.get("LawLevel");
+		return lawArray[lawLevel - 1];
 
 	}
 
@@ -639,31 +472,34 @@ public class UniversalPlanetaryProfile {
 		return starport;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getStarportString() {
 
 		String rv;
+		Map<String, String> ports = (Map<String, String>) propertyMap
+				.get("Starport");
 
 		switch (starport) {
 		case A:
-			rv = "Excellent quality installation. Refined fuel available. Annual maintenance overhaul available. Shipyard capable of constructing starships and non-starships present. Naval base and or scout base may be present.";
+			rv = ports.get("ClassA");
 			break;
 		case B:
 
-			rv = "Good quality installation. Refined fuel available. Annual maintenance overhaul available. Shipyard capable of constructing non-starships present. Naval base and/or scout base may be present.";
+			rv = ports.get("ClassB");
 			break;
 		case C:
-			rv = "Routine quality installation. Only unrefined fuel available. Reasonable repair facilities present. Scout base may be present.";
+			rv = ports.get("ClassC");
 			break;
 		case D:
-			rv = "Poor quality installation. Only unrefined fuel available. No repair or shipyard facilities present. Scout base may be present.";
+			rv = ports.get("ClassD");
 			break;
 
 		case E:
-			rv = "Frontier installation. Essentially a marked spot of bedrock with no fuel, facilities, or bases present.";
+			rv = ports.get("ClassE");
 			break;
 
 		case none:
-			rv = "No starport. No provision is made for any ship landings.";
+			rv = ports.get("None");
 			break;
 		default:
 			rv = "";
