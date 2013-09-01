@@ -321,6 +321,7 @@ public class ClassicTravellerPassenger {
 	 * 
 	 * Used to insert debugging comments for myself
 	 */
+	@SuppressWarnings("unused")
 	private void debug(String s){
 		if(debug)
 			System.out.println();
