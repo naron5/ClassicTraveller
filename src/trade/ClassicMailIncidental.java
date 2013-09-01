@@ -3,8 +3,8 @@
  */
 package trade;
 
+import util.DiceGenerator;
 import decoder.Ship;
-import dieRoller.DiceGenerator;
 
 /**
  * @author markknights
@@ -27,7 +27,7 @@ public class ClassicMailIncidental {
 	
 	public boolean privateMessage(){
 		boolean approached = false;
-		int roll = sixer.rollDice(2, 6);
+		int roll = DiceGenerator.rollDice(2, 6);
 		
 		if(roll > 8){
 			approached = true;

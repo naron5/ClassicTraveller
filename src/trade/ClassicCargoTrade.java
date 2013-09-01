@@ -5,8 +5,9 @@ package trade;
 
 import java.util.Random;
 
+import util.DiceGenerator;
+
 import decoder.Planet;
-import dieRoller.DiceGenerator;
 
 
 /**
@@ -64,80 +65,80 @@ public class ClassicCargoTrade {
 			}
 		case 1:
 			if(major != -1){
-				cargoAmount[0] = sixer.rollDiceWithModifier(1, 6, (-4 + dieMod)) * cargoMult[0];
+				cargoAmount[0] = DiceGenerator.rollDiceWithModifier(1, 6, (-4 + dieMod)) * cargoMult[0];
 			}
 			if(minor != -1){
-				cargoAmount[1] = sixer.rollDiceWithModifier(1, 6, (-4 + dieMod)) * cargoMult[1];
+				cargoAmount[1] = DiceGenerator.rollDiceWithModifier(1, 6, (-4 + dieMod)) * cargoMult[1];
 			}
 			cargoAmount[2] = 0;
 			break;
 		case 2: 
 			if(major != -1){
-				cargoAmount[0] = sixer.rollDiceWithModifier(1, 6, (-2 + dieMod)) * cargoMult[0];
+				cargoAmount[0] = DiceGenerator.rollDiceWithModifier(1, 6, (-2 + dieMod)) * cargoMult[0];
 			}
 			if(minor != -1){
-				cargoAmount[1] = sixer.rollDiceWithModifier(1, 6, (-1 + dieMod)) * cargoMult[1];
+				cargoAmount[1] = DiceGenerator.rollDiceWithModifier(1, 6, (-1 + dieMod)) * cargoMult[1];
 			}
 			cargoAmount[2] = 0;
 			break;
 		case 3:
 			if(major != -1){
-				cargoAmount[0] = sixer.rollDiceWithModifier(1, 6, (-1 + dieMod)) * cargoMult[0];
+				cargoAmount[0] = DiceGenerator.rollDiceWithModifier(1, 6, (-1 + dieMod)) * cargoMult[0];
 			}
 			if(minor != -1){
-				cargoAmount[1] = sixer.rollDiceWithModifier(1, 6, dieMod) * cargoMult[1];
+				cargoAmount[1] = DiceGenerator.rollDiceWithModifier(1, 6, dieMod) * cargoMult[1];
 			}
 			cargoAmount[2] = 0;
 			break;
 		case 4:
 			if(major != -1){
-				cargoAmount[0] = sixer.rollDiceWithModifier(1, 6, dieMod) * cargoMult[0];
+				cargoAmount[0] = DiceGenerator.rollDiceWithModifier(1, 6, dieMod) * cargoMult[0];
 			}
 			if(minor != -1){
-				cargoAmount[1] = sixer.rollDiceWithModifier(1, 6, (1 + dieMod)) * cargoMult[1];
+				cargoAmount[1] = DiceGenerator.rollDiceWithModifier(1, 6, (1 + dieMod)) * cargoMult[1];
 			}
 			cargoAmount[2] = 0;
 			break;
 		case 5:
 			if(major != -1){
-				cargoAmount[0] = sixer.rollDiceWithModifier(1, 6, (population - 4 + dieMod)) * cargoMult[0];
+				cargoAmount[0] = DiceGenerator.rollDiceWithModifier(1, 6, (population - 4 + dieMod)) * cargoMult[0];
 			}
 			if(minor != -1){
-				cargoAmount[1] = sixer.rollDiceWithModifier(1, 6, (population - 3 + dieMod)) * cargoMult[1];
+				cargoAmount[1] = DiceGenerator.rollDiceWithModifier(1, 6, (population - 3 + dieMod)) * cargoMult[1];
 			}
 			cargoAmount[2] = 0;
 			break;
 		case 6: case 7:
 			if(major != -1){
-				cargoAmount[0] = sixer.rollDiceWithModifier(1, 6, (population -4 + dieMod)) * cargoMult[0];
+				cargoAmount[0] = DiceGenerator.rollDiceWithModifier(1, 6, (population -4 + dieMod)) * cargoMult[0];
 			}
 			if(minor != -1){
-				cargoAmount[1] = sixer.rollDiceWithModifier(1, 6, (population -3 + dieMod)) * cargoMult[1];
+				cargoAmount[1] = DiceGenerator.rollDiceWithModifier(1, 6, (population -3 + dieMod)) * cargoMult[1];
 			}
 			if(incidental != -1){
-				cargoAmount[2] = sixer.rollDiceWithModifier(1, 6, (-3 + dieMod));
+				cargoAmount[2] = DiceGenerator.rollDiceWithModifier(1, 6, (-3 + dieMod));
 			}
 			break;
 		case 8: case 9:
 			if(major != -1){
-				cargoAmount[0] = sixer.rollDiceWithModifier(1, 6, (population -4 + dieMod)) * cargoMult[0];
+				cargoAmount[0] = DiceGenerator.rollDiceWithModifier(1, 6, (population -4 + dieMod)) * cargoMult[0];
 			}
 			if(minor != -1){
-				cargoAmount[1] = sixer.rollDiceWithModifier(1, 6, (population -3 + dieMod)) * cargoMult[1];
+				cargoAmount[1] = DiceGenerator.rollDiceWithModifier(1, 6, (population -3 + dieMod)) * cargoMult[1];
 			}
 			if(incidental != -1){
-				cargoAmount[2] = sixer.rollDiceWithModifier(1, 6, (-2 + dieMod));
+				cargoAmount[2] = DiceGenerator.rollDiceWithModifier(1, 6, (-2 + dieMod));
 			}
 			break;
 		case 10:
 			if(major != -1){
-				cargoAmount[0] = sixer.rollDiceWithModifier(1, 6, (population -4 + dieMod)) * cargoMult[0];
+				cargoAmount[0] = DiceGenerator.rollDiceWithModifier(1, 6, (population -4 + dieMod)) * cargoMult[0];
 			}
 			if(minor != -1){
-				cargoAmount[1] = sixer.rollDiceWithModifier(1, 6, (population -3 + dieMod)) * cargoMult[1];
+				cargoAmount[1] = DiceGenerator.rollDiceWithModifier(1, 6, (population -3 + dieMod)) * cargoMult[1];
 			}
 			if(incidental != -1){
-				cargoAmount[2] = sixer.rollDiceWithModifier(1, 6, dieMod);
+				cargoAmount[2] = DiceGenerator.rollDiceWithModifier(1, 6, dieMod);
 			}
 			break;
 		default:

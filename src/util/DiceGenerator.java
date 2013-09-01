@@ -1,4 +1,4 @@
-package dieRoller;
+package util;
 
 //
 //  DiceGenerator.java
