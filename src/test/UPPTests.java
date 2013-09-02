@@ -1,5 +1,6 @@
 package test;
 
+
 import org.testng.*;
 
 import org.testng.annotations.*;
@@ -13,6 +14,7 @@ public class UPPTests {
 	public void sizeTest() {
 		UniversalPlanetaryProfile upp = new UniversalPlanetaryProfile(
 				Starport.none, 1, 0, 0, 0, 0, 0, 0, false, false, false);
-		Assert.assertEquals("1000 miles (1600 km)",upp.getSizeString());
+		String rv = upp.getSizeString();
+		Assert.assertEquals("1000 miles (1600 km)",rv);
 	}
 }
