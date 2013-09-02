@@ -6,14 +6,7 @@ import java.util.Random;
  * @author markknights
  *
  */
-/**
- * @author markknights
- *
- */
-/**
- * @author markknights
- *
- */
+
 public class Planet {
 	String name, details;
 	int hexLocation;
@@ -80,7 +73,7 @@ public class Planet {
 	 * Generates a fully formed planet.  Hex location is expected but if it is
 	 * not yet placed put a negative number into the hexLocale parameter
 	 */
-	public Planet(String planetName, int hexLocale, char starportType, int planetSize, int planetAtmosphere, int hydroPercent, int population,
+	public Planet(String planetName, int hexLocale, Starport starportType, int planetSize, int planetAtmosphere, int hydroPercent, int population,
 			int planetGovernment, int law, int techLevel, boolean navalBase, boolean scoutBase, boolean gasGiant, boolean redZone, boolean amberZone){
 		name = planetName;
 		if(hexLocale >= 0){
