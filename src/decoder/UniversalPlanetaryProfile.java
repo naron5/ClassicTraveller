@@ -377,8 +377,9 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getSizeString() {
+		
 		return String.format((String) propertyMap.get("PlanetSize"),
-				planSize * 1000, planSize * 1000 * 1.6);
+				planSize * 1000, planSize * 1600);
 	}
 
 	public void setPlanSize(int planSize) {
@@ -390,9 +391,10 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getPlanAtmosString() {
-		String[] atmosArray = (String[]) propertyMap.get("Atmosphere");
+		@SuppressWarnings("unchecked")
+		ArrayList<String> atmosArray = (ArrayList<String>) propertyMap.get("Atmosphere");
 
-		return atmosArray[planAtmos - 1];
+		return atmosArray.get(planAtmos);
 	}
 
 	public void setPlanAtmos(int planAtmos) {
@@ -425,8 +427,9 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getPopString() {
-		String[] popArray = (String[]) propertyMap.get("Population");
-		return popArray[pop - 1];
+		@SuppressWarnings("unchecked")
+		ArrayList<String> popArray = (ArrayList<String>) propertyMap.get("Population");
+		return popArray.get(pop);
 	}
 
 	public void setPop(int pop) {
@@ -438,8 +441,9 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getPlanGovString() {
-		String[] govArray = (String[]) propertyMap.get("Government");
-		return govArray[planGov - 1];
+		@SuppressWarnings("unchecked")
+		ArrayList<String> govArray = (ArrayList<String>) propertyMap.get("Government");
+		return govArray.get(planGov);
 	}
 
 	public void setPlanGov(int planGov) {
@@ -451,8 +455,9 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getLawLevelString() {
-		String[] lawArray = (String[]) propertyMap.get("LawLevel");
-		return lawArray[lawLevel - 1];
+		@SuppressWarnings("unchecked")
+		ArrayList<String> lawArray = (ArrayList<String>) propertyMap.get("LawLevel");
+		return lawArray.get(lawLevel);
 
 	}
 
