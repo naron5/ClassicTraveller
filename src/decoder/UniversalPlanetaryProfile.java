@@ -367,8 +367,10 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getSizeString() {
-		return String.format("%d miles (%d km)", planSize * 1000,
-				planSize * 1000 * 1.6);
+
+		return String.format((String) propertyMap.get("PlanetSize"),
+				planSize * 1000, planSize * 1600);
+
 	}
 
 	public void setPlanSize(int planSize) {
@@ -380,49 +382,12 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getPlanAtmosString() {
-		String rv = "";
-		switch (planAtmos) {
-		case 0:
-			rv = "No atmosphere.";
-			break;
-		case 1:
-			rv = "Trace.";
-			break;
-		case 2:
-			rv = "Very thin, tainted.";
-			break;
-		case 3:
-			rv = "Very thin.";
-			break;
-		case 4:
-			rv = "Thin, tainted.";
-			break;
-		case 5:
-			rv = "Thin.";
-			break;
-		case 6:
-			rv = "Standard";
-			break;
-		case 7:
-			rv = "Standard, tainted";
-			break;
-		case 8:
-			rv = "Dense.";
-			break;
-		case 9:
-			rv = "Dense, tainted.";
-			break;
-		case 10:
-			rv = "Exotic.";
-			break;
-		case 11:
-			rv = "Corrosive.";
-			break;
-		case 12:
-			rv = "Insidious.";
-			break;
-		}
-		return rv;
+
+		@SuppressWarnings("unchecked")
+		ArrayList<String> atmosArray = (ArrayList<String>) propertyMap.get("Atmosphere");
+
+		return (String)atmosArray.get(planAtmos);
+
 	}
 
 	public void setPlanAtmos(int planAtmos) {
@@ -455,55 +420,11 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getPopString() {
-		/*
-		 * static final String[] POPULATION = { "No inhabitants.",
-		 * "Tens of inhabitants.", "Hundreds of inhabitants.",
-		 * "Thousands of inhabitants.", "Tens of thousands.",
-		 * "Hundreds of thousands.", "Millions of inhabitants.",
-		 * "Tens of millions.", "Hundreds of millions.",
-		 * "Billions of inhabitants.", "Tens of billions." };
-		 */
-		String rv;
-		switch (pop) {
-		case 0:
-			rv = "No inhabitants.";
-			break;
-		case 1:
-			rv = "Tens of inhabitants.";
-			break;
-		case 2:
-			rv = "Hundreds of inhabitants.";
-			break;
-		case 3:
-			rv = "Thousands of inhabitants.";
-			break;
-		case 4:
-			rv = "Tens of thousands.";
-			break;
-		case 5:
-			rv = "Hundreds of thousands.";
-			break;
-		case 6:
-			rv = "Millions of inhabitants.";
-			break;
-		case 7:
-			rv = "Tens of millions.";
-			break;
-		case 8:
-			rv = "Hundreds of millions.";
-			break;
-		case 9:
-			rv = "Billions of inhabitants.";
-			break;
-		case 10:
-			rv = "Tens of billions.";
-			break;
-		default:
-			rv = "";
-			break;
 
-		}
-		return rv;
+		@SuppressWarnings("unchecked")
+		ArrayList<String> popArray = (ArrayList<String> ) propertyMap.get("Population");
+		return popArray.get(pop);
+
 	}
 
 	public void setPop(int pop) {
@@ -515,54 +436,10 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getPlanGovString() {
-		String rv;
-		switch (planGov) {
-		case 0:
-			rv = "No government structure. In many cases, family bonds predominate.";
-			break;
-		case 1:
-			rv = "Company/Corporation. Government by a company managerial elite; citizens are company employees.";
-			break;
-		case 2:
-			rv = "Participating Democracy. Government by advice and consent of the citizen.";
-			break;
-		case 3:
-			rv = "Self-Perpetuating Oligarchy. Government by a restricted minority, with little or no input from the masses.";
-			break;
-		case 4:
-			rv = "Representative Democracy. Government by elected representatives.";
-			break;
-		case 5:
-			rv = "Feudal Technocracy. Government by specific individuals for those who agree to be ruled. Relationships are based on the performance of technical activities which are mutually beneficial.";
-			break;
-		case 6:
-			rv = "Captive Government. Government by an imposed leadership answerable to an outside group. A colony or conquered area.";
-			break;
-		case 7:
-			rv = "Balkanization. No central ruling authority exists; rival governments compete for control.";
-			break;
-		case 8:
-			rv = "Civil Service Bureaucracy. Government by agencies employing individuals selected for their expertise.";
-			break;
-		case 9:
-			rv = "Impersonal Bureaucracy. Government by agencies which are insulated from the governed.";
-			break;
-		case 10:
-			rv = "Charismatic Dictator. Government by a single leader enjoying the confidence of the citizens.";
-			break;
-		case 11:
-			rv = "Non-Charismatic Leader. A previous charismatic dictatar has been replaced by a leader through normal channels.";
-			break;
-		case 12:
-			rv = "Charismatic Oligarchy. Government by a select group, organization, or class enjoying the overwhelming confidence of the citizenry.";
-			break;
-		case 13:
-			rv = "Religious Dictatorship. Government by a religious organization without regard to the specific needs of the citizenry.";
-		default:
-			rv = "";
-			break;
-		}
-		return rv;
+		@SuppressWarnings("unchecked")		
+		ArrayList<String> govArray = (ArrayList<String>) propertyMap.get("Government");
+		return govArray.get(planGov);
+
 	}
 
 	public void setPlanGov(int planGov) {
@@ -574,52 +451,10 @@ public class UniversalPlanetaryProfile {
 	}
 
 	public String getLawLevelString() {
-		String rv;
-		switch (lawLevel) {
-		case 0:
-			rv = "No prohibitions.";
-			break;
 
-		case 1:
-			rv = "Body pistols undetectable by standard detectors, explosives (bombs, grenades), and poison gas prohibited.";
-			break;
-
-		case 2:
-			rv = "Portable energy weapons (laser carbine, laser rifle) prohibited. Ship's gunnery not affected.";
-			break;
-
-		case 3:
-			rv = "Weapons of a strict military nature (machine guns, automatic rifles) prohibited.";
-			break;
-
-		case 4:
-			rv = "Light assault weapons machineguns)prohibited.";
-			break;
-
-		case 5:
-			rv = "Personal concealable firearms (such as pistols and revolvers) prohibited.";
-			break;
-
-		case 6:
-			rv = "Most firearms (all except shotguns) prohibited. The carrying of any type of weapon openly is discouraged.";
-			break;
-
-		case 7:
-			rv = "Shotguns are prohibited.";
-			break;
-
-		case 8:
-			rv = "Long bladed weapons (all but daggers) are controlled, and open poss- ession is prohibited.";
-			break;
-
-		case 9:
-			rv = "Possession of any weapon outside one's residence is prohibited.";
-			break;
-		default:
-			rv = "";
-			break;
-		}
-		return rv;
+		@SuppressWarnings("unchecked")
+		ArrayList<String> lawArray = (ArrayList<String>) propertyMap.get("LawLevel");
+		return lawArray.get(lawLevel);
 
 	}
 
