@@ -3,10 +3,8 @@
  */
 package trade;
 
-import java.util.Random;
-
+import util.DiceGenerator;
 import decoder.Planet;
-import dieRoller.DiceGenerator;
 
 /**
  * @author markknights
@@ -17,8 +15,6 @@ public class ClassicTravellerPassenger {
 	boolean debug = false;
 	int high, middle, low, dieMod;
 	int passOnOffer[] = new int[3];
-	Random generator = new Random();
-	DiceGenerator sixer = new DiceGenerator();
 	
 	/**
 	 * @param exporter
@@ -59,7 +55,7 @@ public class ClassicTravellerPassenger {
 			case 1:
 				passengers[0] = 0;
 				if(middle != 1){
-					temp = sixer.rollDiceWithModifier(1, 6, -2 + dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(1, 6, -2 + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -67,7 +63,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = sixer.rollDiceWithModifier(2, 6, -6+dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(2, 6, -6+dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -76,14 +72,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 2: 
-				temp = sixer.rollDiceWithModifier(1, 6, -(sixer.rollDice(1, 6)) + dieMod);
+				temp = DiceGenerator.rollDiceWithModifier(1, 6, -(DiceGenerator.rollDice(1, 6)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = sixer.rollDiceWithModifier(1, 6, dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(1, 6, dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -91,7 +87,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = sixer.rollDiceWithModifier(2, 6, dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(2, 6, dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -100,14 +96,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 3:
-				temp = sixer.rollDiceWithModifier(2, 6, -(sixer.rollDice(2, 6)) + dieMod);
+				temp = DiceGenerator.rollDiceWithModifier(2, 6, -(DiceGenerator.rollDice(2, 6)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = sixer.rollDiceWithModifier(2, 6, -(sixer.rollDice(1, 6))+dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(2, 6, -(DiceGenerator.rollDice(1, 6))+dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -115,7 +111,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = sixer.rollDiceWithModifier(2, 6, dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(2, 6, dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -124,14 +120,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 4:
-				temp = sixer.rollDiceWithModifier(2, 6, -(sixer.rollDice(1, 6)) + dieMod);
+				temp = DiceGenerator.rollDiceWithModifier(2, 6, -(DiceGenerator.rollDice(1, 6)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = sixer.rollDiceWithModifier(2, 6, -(sixer.rollDice(1, 6))+dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(2, 6, -(DiceGenerator.rollDice(1, 6))+dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -139,7 +135,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = sixer.rollDiceWithModifier(3, 6, -(sixer.rollDice(1, 6))+dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(3, 6, -(DiceGenerator.rollDice(1, 6))+dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -148,14 +144,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 5:
-				temp = sixer.rollDiceWithModifier(2, 6, -(sixer.rollDice(1, 6)) + dieMod);
+				temp = DiceGenerator.rollDiceWithModifier(2, 6, -(DiceGenerator.rollDice(1, 6)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = sixer.rollDiceWithModifier(3, 6, -(sixer.rollDice(2, 6))+dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(3, 6, -(DiceGenerator.rollDice(2, 6))+dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -163,7 +159,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = sixer.rollDiceWithModifier(3, 6, -(sixer.rollDice(1, 6))+dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(3, 6, -(DiceGenerator.rollDice(1, 6))+dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -172,14 +168,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 6: 
-				temp = sixer.rollDiceWithModifier(3, 6, -(sixer.rollDice(2, 6)) + dieMod);
+				temp = DiceGenerator.rollDiceWithModifier(3, 6, -(DiceGenerator.rollDice(2, 6)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = sixer.rollDiceWithModifier(3, 6, -(sixer.rollDice(2, 6))+dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(3, 6, -(DiceGenerator.rollDice(2, 6))+dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -187,7 +183,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = sixer.rollDiceWithModifier(3, 6, dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(3, 6, dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -196,14 +192,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 7:
-				temp = sixer.rollDiceWithModifier(3, 6, -(sixer.rollDice(2, 6)) + dieMod);
+				temp = DiceGenerator.rollDiceWithModifier(3, 6, -(DiceGenerator.rollDice(2, 6)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = sixer.rollDiceWithModifier(3, 6, -(sixer.rollDice(1, 6))+dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(3, 6, -(DiceGenerator.rollDice(1, 6))+dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -211,7 +207,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = sixer.rollDiceWithModifier(3, 6, dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(3, 6, dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -220,14 +216,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 8: 
-				temp = sixer.rollDiceWithModifier(3, 6, -(sixer.rollDice(1, 6)) + dieMod);
+				temp = DiceGenerator.rollDiceWithModifier(3, 6, -(DiceGenerator.rollDice(1, 6)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = sixer.rollDiceWithModifier(3, 6, -(sixer.rollDice(1, 6))+dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(3, 6, -(DiceGenerator.rollDice(1, 6))+dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -235,7 +231,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = sixer.rollDiceWithModifier(4, 6, dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(4, 6, dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -244,14 +240,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 9:
-				temp = sixer.rollDiceWithModifier(3, 6, -(sixer.rollDice(1, 6)) + dieMod);
+				temp = DiceGenerator.rollDiceWithModifier(3, 6, -(DiceGenerator.rollDice(1, 6)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = sixer.rollDiceWithModifier(3, 6, dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(3, 6, dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -259,7 +255,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = sixer.rollDiceWithModifier(5, 6, dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(5, 6, dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -268,14 +264,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 10:
-				temp = sixer.rollDiceWithModifier(3, 6, dieMod);
+				temp = DiceGenerator.rollDiceWithModifier(3, 6, dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = sixer.rollDiceWithModifier(4, 6, dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(4, 6, dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -283,7 +279,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = sixer.rollDiceWithModifier(6, 6, dieMod);
+					temp = DiceGenerator.rollDiceWithModifier(6, 6, dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -325,6 +321,7 @@ public class ClassicTravellerPassenger {
 	 * 
 	 * Used to insert debugging comments for myself
 	 */
+	@SuppressWarnings("unused")
 	private void debug(String s){
 		if(debug)
 			System.out.println();

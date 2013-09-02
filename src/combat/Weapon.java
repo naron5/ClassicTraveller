@@ -8,5 +8,5 @@ package combat;
  *
  */
 public class Weapon {
-
+// TODO: Needs to be implemented
 }

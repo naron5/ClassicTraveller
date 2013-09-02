@@ -8,5 +8,9 @@ package decoder;
  *
  */
 public class Ship {
-	//needs to be implemented
+	//TODO: needs to be implemented
+	public Ship()
+	{
+		
+	}
 }
