@@ -1,10 +1,10 @@
 /**
  * 
  */
-package trade;
+package com.ffe.traveller.classic.trade;
 
 import util.DiceGenerator;
-import decoder.Planet;
+import com.ffe.traveller.classic.decoder.Planet;
 
 /**
  * @author markknights

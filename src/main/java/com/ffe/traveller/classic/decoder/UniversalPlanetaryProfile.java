@@ -3,7 +3,7 @@
  * 
  * Bringing Traveller into the Applications world!
  */
-package decoder;
+package com.ffe.traveller.classic.decoder;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -110,7 +110,7 @@ public class UniversalPlanetaryProfile {
 		InputStream input;
 		try {
 			input = new FileInputStream(new File(
-					"src/properties/UniversalPlanetaryProfile.yml"));
+					"src/properties/universal_planetary_profile.yml"));
 			Yaml yaml = new Yaml();
 			propertyMap = (Map<String, Object>) yaml.load(input);
 		} catch (FileNotFoundException e) {

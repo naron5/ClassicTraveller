@@ -1,12 +1,12 @@
-package test;
+package com.ffe.traveller.test;
 
 
 import org.testng.*;
 
 import org.testng.annotations.*;
 
-import decoder.UniversalPlanetaryProfile;
-import decoder.Starport;
+import com.ffe.traveller.classic.decoder.UniversalPlanetaryProfile;
+import com.ffe.traveller.classic.decoder.Starport;
 
 public class UPPTests {
 

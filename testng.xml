@@ -3,7 +3,7 @@
 <suite name="Suite" parallel="none">
   <test name="Test">
     <classes>
-      <class name="test.UPPTests"/>
+      <class name="com.ffe.traveller.test.UPPTests"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package trade;
+package com.ffe.traveller.classic.trade;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,8 +13,8 @@ import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 
-import decoder.Planet;
-import decoder.TradeClassifications;
+import com.ffe.traveller.classic.decoder.Planet;
+import com.ffe.traveller.classic.decoder.TradeClassifications;
 import util.DiceGenerator;
 
 /**
@@ -237,7 +237,7 @@ public class ClassicSpeculative {
 		InputStream input;
 		try {
 			input = new FileInputStream(new File(
-					"src/properties/SpeculativeTrade.yml"));
+					"src/properties/speculative_trade.yml"));
 			Yaml yaml = new Yaml();
 			propertyMap = (Map<String, Object>) yaml.load(input);
 			if(Goods == null)
