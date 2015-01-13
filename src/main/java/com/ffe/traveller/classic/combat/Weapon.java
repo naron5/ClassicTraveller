@@ -1,7 +1,7 @@
 /**
  * 
  */
-package combat;
+package com.ffe.traveller.classic.combat;
 
 /**
  * @author markknights

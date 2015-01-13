@@ -1,7 +1,6 @@
-package driver;
+package com.ffe.traveller.ui.applet;
 
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -21,7 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class ClassTravApplet extends JApplet implements ChangeListener, ActionListener {
+public class ClassicTravellerApplet extends JApplet implements ChangeListener, ActionListener {
 	private String[] testPages = {"Planet Decoder", "Classic Trade"}; 
 	private JTabbedPane tabs = new JTabbedPane();
 	private JTextField txt = new JTextField(20);
@@ -169,7 +168,7 @@ public class ClassTravApplet extends JApplet implements ChangeListener, ActionLi
 	}
 
 	public static void main(String[] args){
-		run(new ClassTravApplet(), 800, 600);
+		run(new ClassicTravellerApplet(), 800, 600);
 	}
 	
 	public static void run(JApplet trav, int width, int height){

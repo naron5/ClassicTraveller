@@ -1,13 +1,13 @@
 /**
  * 
  */
-package trade;
+package com.ffe.traveller.classic.trade;
 
 import java.util.Random;
 
 import util.DiceGenerator;
 
-import decoder.Planet;
+import com.ffe.traveller.classic.decoder.Planet;
 
 
 /**

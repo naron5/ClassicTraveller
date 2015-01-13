@@ -1,7 +1,7 @@
 /**
  * 
  */
-package decoder;
+package com.ffe.traveller.classic.decoder;
 
 /**
  * @author markknights
