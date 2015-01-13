@@ -1,0 +1,6 @@
+travellerApp:
+  image: tomcat:8.0-jre7
+travellerDb:
+  image: dockerfile/mongodb
+travellerElasticSearch:
+  image: dockerfile/elasticsearch
