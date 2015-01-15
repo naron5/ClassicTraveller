@@ -89,11 +89,19 @@
             <layout>default</layout>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>plugin-repository</id>
+            <name>Codehaus Repository</name>
+            <url>https://nexus.codehaus.org/content/repositories/releases/org/codehaus/mojo/</url>
+            <layout>default</layout>
+        </pluginRepository>
+    </pluginRepositories>
     <dependencies>
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.13-SNAPSHOT</version>
+            <version>1.15-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>

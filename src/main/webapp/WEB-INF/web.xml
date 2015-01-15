@@ -19,7 +19,7 @@
 
     <servlet-mapping>
         <servlet-name>jersey-servlet</servlet-name>
-        <url-pattern>/traveller/*</url-pattern>
+        <url-pattern>traveller/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
