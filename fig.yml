@@ -1,5 +1,8 @@
 travellerApp:
   image: tomcat:8.0-jre7
+  links:
+   - travellerDb:traveller-mongo
+   - travellerElasticSearch:traveller-elastic-search
 travellerDb:
   image: dockerfile/mongodb
 travellerElasticSearch:
