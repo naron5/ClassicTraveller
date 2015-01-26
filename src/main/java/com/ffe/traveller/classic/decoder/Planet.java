@@ -1,5 +1,6 @@
 package com.ffe.traveller.classic.decoder;
 
+import lombok.*
 import java.util.Random;
 
 /**
@@ -8,17 +9,20 @@ import java.util.Random;
  */
 
 public class Planet {
-	String name, details;
-	int hexLocation;
-	boolean debug = true;
-	UniversalPlanetaryProfile profile;
 	final String PREFIX = "PSR ";
-	boolean[] zone = new boolean[2]; // red, amber
+	@Getter, @Setter
+	protected String name, details;
+	@Getter, @Setter
+	protected int hexLocation;
+	@Getter, @Setter
+	protected UniversalPlanetaryProfile profile;
+	@Getter, @Setter
+	protected TravelZone zone = TravelZone; // red, amber
 	
 	/**
 	 * Produces an unnamed, unidentified planet
 	 */
-	public Planet(){
+	protected Planet(){
 		name = "Unnamed";
 		profile = new UniversalPlanetaryProfile();
 		hexLocation = -1;
@@ -36,7 +40,7 @@ public class Planet {
 	 * a location is to be entered enter it in the integer format CCNN where
 	 * C is the column number and N is the hex number
 	 */
-	public Planet(boolean identified, int hexLocale){
+	protected Planet(boolean identified, int hexLocale){
 		if(identified){
 			name = getScientificName();
 		}else{
@@ -73,7 +77,7 @@ public class Planet {
 	 * Generates a fully formed planet.  Hex location is expected but if it is
 	 * not yet placed put a negative number into the hexLocale parameter
 	 */
-	public Planet(String planetName, int hexLocale, Starport starportType, int planetSize, int planetAtmosphere, int hydroPercent, int population,
+	protected Planet(String planetName, int hexLocale, Starport starportType, int planetSize, int planetAtmosphere, int hydroPercent, int population,
 			int planetGovernment, int law, int techLevel, boolean navalBase, boolean scoutBase, boolean gasGiant, boolean redZone, boolean amberZone){
 		name = planetName;
 		if(hexLocale >= 0){
