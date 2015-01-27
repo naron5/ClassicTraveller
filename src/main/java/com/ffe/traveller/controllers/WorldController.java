@@ -11,12 +11,12 @@ import javax.validation.constraints.*;
  */
 
 @Path("/{ruleSet}/world")
-public class WorldService {
+public class WorldController {
 
 
     @GET
     @Path("/")
-    public Response searchAllWorlds(@PathParam("ruleSet") String rules,
+    public static Response searchAllWorlds(@PathParam("ruleSet") String rules,
                                     @QueryParam("sector") String sector,
                                     @QueryParam("subsector") String subsector,
                                     @QueryParam("hex") String hex,
@@ -29,7 +29,7 @@ public class WorldService {
 
     @PUT
     @Path("/")
-    public Response createWorld(@BeanParam String upp){
+    public static Response createWorld(@BeanParam UniversalPlanetaryProfile upp){
 
 
         return Response.status(200).entity("Booyah").build();

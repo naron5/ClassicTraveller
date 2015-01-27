@@ -17,8 +17,8 @@ public class ClassicTravellerPassenger {
 	int passOnOffer[] = new int[3];
 	
 	/**
-	 * @param exporter
-	 * @param importer
+	 * @param from
+	 * @param to
 	 * 
 	 * Details the availability of passengers needing travel taking into account
 	 * the to and from for planets

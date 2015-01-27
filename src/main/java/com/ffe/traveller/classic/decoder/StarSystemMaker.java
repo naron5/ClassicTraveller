@@ -5,7 +5,9 @@ import java.util.HashMap;
 /**
  * Created by darkmane on 1/15/15.
  */
-public class StarSystem {
-    public Planet MainWorld;
-    public HashMap<Integer, Planet> MinorPlanets;
+public class StarSystemMaker {
+
+	public StarSystem CreateStarSystem() {
+
+	}
 }

@@ -1,5 +1,5 @@
 /**
- * @author markknights
+ * @author darkmane
  * 
  * Bringing Traveller into the Applications world!
  */
@@ -13,17 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.ffe.traveller.util.DiceGenerator;
 import org.yaml.snakeyaml.Yaml;
 
-import util.DiceGenerator;
 
-public class UniversalPlanetaryProfile {
-	int diameter, atmosphere, hydro, pop, planGov, lawLevel, techLev;
 
-	Starport starport;
-	boolean navy, scout, gg;
+public class UniversalPlanetaryProfileMaker {
+
 	String description;
-	private static Map<String, Object> propertyMap;
 
 	boolean debug = false;
 	/*
@@ -32,7 +29,7 @@ public class UniversalPlanetaryProfile {
 
 	Set<TradeClassifications> tradeClassifications = new HashSet<>();
 
-	public UniversalPlanetaryProfile() {
+	public static UniversalPlanetaryProfile CreateUniversalPlanetaryProfile() {
 		loadProperties();
 		starport = getStarport(DiceGenerator.rollDice(2, 6));
 		diameter = DiceGenerator.rollDiceWithModifier(2, 6, -2);
@@ -79,7 +76,7 @@ public class UniversalPlanetaryProfile {
 		debug(description);
 	}
 
-	public UniversalPlanetaryProfile(Starport starportType, int planetSize,
+	public UniversalPlanetaryProfileMaker(Starport starportType, int planetSize,
 			int planetAtmosphere, int hydroPercent, int population,
 			int planetGovernment, int law, int techLevel, boolean navalBase,
 			boolean scoutBase, boolean gasGiant) {
