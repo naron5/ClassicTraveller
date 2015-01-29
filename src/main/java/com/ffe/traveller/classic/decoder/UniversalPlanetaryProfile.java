@@ -7,11 +7,9 @@ package com.ffe.traveller.classic.decoder;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import com.ffe.traveller.util.DiceGenerator;
 import org.yaml.snakeyaml.Yaml;
 
 import lombok.Getter;
@@ -22,25 +20,25 @@ public class UniversalPlanetaryProfile {
 
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private int diameter;
+    private Integer diameter;
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private int atmosphere;
+    private Integer atmosphere;
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private int hydro;
+    private Integer hydro;
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private int pop;
+    private Integer population;
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private int planGov;
+    private Integer planGov;
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private int lawLevel;
+    private Integer lawLevel;
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private int techLev;
+    private Integer techLev;
 
     @Getter
     @Setter(AccessLevel.PROTECTED)
@@ -50,8 +48,32 @@ public class UniversalPlanetaryProfile {
 
     private static Map<String, Object> propertyMap;
 
-    public UniversalPlanetaryProfile(){
+
+    protected UniversalPlanetaryProfile(Starport port, Integer size, Integer atmos, Integer water,
+                                        Integer pop, Integer gov, Integer law) {
         loadProperties();
+        starport = port;
+        diameter = size;
+        atmosphere = atmos;
+        hydro = water;
+        population = pop;
+        planGov = gov;
+        lawLevel = law;
+
+    }
+
+    protected UniversalPlanetaryProfile(Starport port, Integer size, Integer atmos, Integer water,
+                                        Integer pop, Integer gov, Integer law, Integer tech) {
+        loadProperties();
+        starport = port;
+        diameter = size;
+        atmosphere = atmos;
+        hydro = water;
+        population = pop;
+        planGov = gov;
+        lawLevel = law;
+        techLev = tech;
+
     }
 
     @SuppressWarnings("unchecked")
@@ -72,20 +94,20 @@ public class UniversalPlanetaryProfile {
 
     }
 
-    public String getSize() {
+    public String Size() {
 
         return String.format((String) propertyMap.get("PlanetSize"),
                 diameter * 1000, diameter * 1600);
     }
 
-    public String getAtmosphere() {
+    public String Atmosphere() {
         @SuppressWarnings("unchecked")
         ArrayList<String> atmosArray = (ArrayList<String>) propertyMap.get("Atmosphere");
 
         return atmosArray.get(atmosphere);
     }
 
-    public String getHydrographics() {
+    public String Hydrographics() {
         String rv;
         if (hydro < 1) {
             rv = "No free standing water. Desert.";
@@ -98,67 +120,84 @@ public class UniversalPlanetaryProfile {
         return rv;
     }
 
-    public String getPopulation() {
+    public String Population() {
         @SuppressWarnings("unchecked")
         ArrayList<String> popArray = (ArrayList<String>) propertyMap.get("Population");
-        return popArray.get(pop);
+        return popArray.get(population);
     }
 
-    public String getGovernment() {
+    public String Government() {
         @SuppressWarnings("unchecked")
         ArrayList<String> govArray = (ArrayList<String>) propertyMap.get("Government");
         return govArray.get(planGov);
     }
 
-    public String getLawLevel() {
+    public String LawLevel() {
         @SuppressWarnings("unchecked")
         ArrayList<String> lawArray = (ArrayList<String>) propertyMap.get("LawLevel");
         return lawArray.get(lawLevel);
 
     }
 
-    @SuppressWarnings("unchecked")
-    public String getStarport() {
+    protected void rollTechLevel(int roll) {
+        int level = DiceGenerator.rollDice(1);
 
-        String rv;
-        Map<String, String> ports = (Map<String, String>) propertyMap
-                .get("Starport");
-
+        // starport effects
         switch (starport) {
             case A:
-                rv = ports.get("ClassA");
+                level += 6;
                 break;
             case B:
-
-                rv = ports.get("ClassB");
+                level += 4;
                 break;
             case C:
-                rv = ports.get("ClassC");
+                level += 2;
                 break;
-            case D:
-                rv = ports.get("ClassD");
-                break;
-
-            case E:
-                rv = ports.get("ClassE");
-                break;
-
-            case none:
-                rv = ports.get("None");
+            case X:
+                level -= 4;
                 break;
             default:
-                rv = "";
-                break;
+                level = 0;
         }
-        return rv;
+
+        // planetary size effects
+        if (diameter < 2) {
+            level += +2;
+        } else if (diameter > 1 && diameter < 5) {
+            level += 1;
+        }
+
+        // planetary atmosphere effects
+        if (atmosphere < 4 || atmosphere > 9) {
+            level += 1;
+        }
+
+        // Hydrography percentage effects
+        if (hydro == 9) {
+            level += 1;
+        } else if (hydro == 10) {
+            level += 2;
+        }
+
+        // population effects
+        if (population > 0 && population < 6) {
+            level += 1;
+        } else if (population == 9) {
+            level += 2;
+        } else if (population == 10) {
+            level += 4;
+        }
+
+        // Government effects
+        if (planGov == 0 || planGov == 5) {
+            level += 1;
+        } else if (planGov == 13) {
+            level -= 2;
+        }
+        this.techLev = level;
+
+
     }
 
-    /**
-     * @param string
-     */
-    private void debug(String string) {
-        if (debug) {
-            System.out.println(string);
-        }
-    }
+
 }

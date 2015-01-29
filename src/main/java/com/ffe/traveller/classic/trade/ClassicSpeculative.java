@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ffe.traveller.classic.decoder.Planet;
 import org.yaml.snakeyaml.Yaml;
 
-import com.ffe.traveller.classic.decoder.Planet;
 import com.ffe.traveller.classic.decoder.TradeClassifications;
-import util.DiceGenerator;
+import static com.ffe.traveller.util.DiceGenerator.*;
 
 /**
  * @author markknights
@@ -55,23 +55,20 @@ public class ClassicSpeculative {
 
 
 		// Set up the quantity array
-		quantity[4] = quantity[5] = quantity[11] = quantity[12] = quantity[17] = quantity[18] = quantity[24] = quantity[25] = quantity[26] = quantity[27] = quantity[28] = quantity[29] = DiceGenerator
-				.rollDice(1, 6);
-		quantity[19] = quantity[20] = quantity[21] = quantity[22] = quantity[23] = DiceGenerator
-				.rollDice(2, 6);
-		quantity[2] = quantity[10] = quantity[15] = quantity[30] = quantity[31] = quantity[32] = quantity[33] = quantity[34] = quantity[35] = DiceGenerator
-				.rollDice(1, 6) * 5;
-		quantity[16] = DiceGenerator.rollDice(2, 6) * 5;
-		quantity[0] = DiceGenerator.rollDice(3, 6) * 5;
-		quantity[1] = quantity[14] = DiceGenerator.rollDice(4, 6) * 5;
-		quantity[13] = DiceGenerator.rollDice(8, 6) * 5;
-		quantity[3] = quantity[7] = DiceGenerator.rollDice(2, 6) * 10;
-		quantity[9] = DiceGenerator.rollDice(3, 6) * 10;
-		quantity[6] = DiceGenerator.rollDice(4, 6) * 10;
-		quantity[8] = DiceGenerator.rollDice(5, 6) * 10;
+		quantity[4] = quantity[5] = quantity[11] = quantity[12] = quantity[17] = quantity[18] = quantity[24] = quantity[25] = quantity[26] = quantity[27] = quantity[28] = quantity[29] = rollDice(1);
+		quantity[19] = quantity[20] = quantity[21] = quantity[22] = quantity[23] = rollDice(2);
+		quantity[2] = quantity[10] = quantity[15] = quantity[30] = quantity[31] = quantity[32] = quantity[33] = quantity[34] = quantity[35] = rollDice(1) * 5;
+		quantity[16] = rollDice(2) * 5;
+		quantity[0] = rollDice(3) * 5;
+		quantity[1] = quantity[14] = rollDice(4) * 5;
+		quantity[13] = rollDice(8) * 5;
+		quantity[3] = quantity[7] = rollDice(2) * 10;
+		quantity[9] = rollDice(3) * 10;
+		quantity[6] = rollDice(4) * 10;
+		quantity[8] = rollDice(5) * 10;
 
 		// get details
-		choice = DiceGenerator.rollDice(1, 36) - 1;
+		choice = rollDice(1, 36) - 1;
 
 		type = Goods.get(choice);
 		basePrice = BasePrices.get(choice);
@@ -83,9 +80,9 @@ public class ClassicSpeculative {
 
 			dieModPur += purchaseMods.get(choice).get(classification);
 
-			if (from.getProfile().getPop() > 8) {
+			if (from.getProfile().getPopulation() > 8) {
 				dieModPur += 6;
-			} else if (from.getProfile().getPop() < 6) {
+			} else if (from.getProfile().getPopulation() < 6) {
 				dieModPur -= 6;
 			}
 

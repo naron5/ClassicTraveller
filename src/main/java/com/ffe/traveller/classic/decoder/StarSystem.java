@@ -7,7 +7,9 @@ import lombok.*;
  */
 public class StarSystem {
 		@Getter @Setter(AccessLevel.PROTECTED)
-    public Planet MainWorld;
+    private Planet mainWorld;
 		@Getter @Setter
-    public HashMap<Integer, Planet> MinorPlanets;
+    private HashMap<Integer, Planet> minorPlanets;
+    @Getter @Setter(AccessLevel.PROTECTED)
+    private TravelZone zone;
 }
