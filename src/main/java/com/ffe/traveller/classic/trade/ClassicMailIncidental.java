@@ -3,7 +3,7 @@
  */
 package com.ffe.traveller.classic.trade;
 
-import util.DiceGenerator;
+import static com.ffe.traveller.util.DiceGenerator.*;
 import com.ffe.traveller.classic.decoder.Ship;
 
 /**
@@ -15,7 +15,6 @@ public class ClassicMailIncidental {
 	//class variables
 	boolean debug = false;
 	boolean subsidized = false;
-	DiceGenerator sixer = new DiceGenerator();
 	
 	public  ClassicMailIncidental(boolean SubsidisedMerchant){
 		subsidized = SubsidisedMerchant;
@@ -27,7 +26,7 @@ public class ClassicMailIncidental {
 	
 	public boolean privateMessage(){
 		boolean approached = false;
-		int roll = DiceGenerator.rollDice(2, 6);
+		int roll = rollDice(2);
 		
 		if(roll > 8){
 			approached = true;
