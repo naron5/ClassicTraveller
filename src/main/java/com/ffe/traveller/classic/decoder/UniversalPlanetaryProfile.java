@@ -7,7 +7,10 @@ package com.ffe.traveller.classic.decoder;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
 
 import com.ffe.traveller.util.DiceGenerator;
 import org.yaml.snakeyaml.Yaml;
@@ -197,6 +200,35 @@ public class UniversalPlanetaryProfile {
         this.techLev = level;
 
 
+    }
+
+    public Set<TradeClassifications> getTradeClassifications() {
+        // Agricultural
+        Set<TradeClassifications> tradeClassifications = new HashSet();
+        if ((atmosphere > 3 && atmosphere < 10) && (hydro > 3 && hydro < 9)
+                && (population > 4 && population < 8)) {
+            tradeClassifications.add(TradeClassifications.Agricultural);
+        } else if (atmosphere < 4 && population > 5) {
+            tradeClassifications.add(TradeClassifications.NonAgricultural);
+        }
+
+        // Industrial
+        if ((atmosphere < 3 || atmosphere == 4 || atmosphere == 7 || atmosphere == 9)
+                && population > 8) {
+            tradeClassifications.add(TradeClassifications.Industrial);
+            ;
+        } else if (population < 7) {
+            tradeClassifications.add(TradeClassifications.NonIndustrial);
+        }
+
+        // Financial
+        if ((atmosphere == 6 || atmosphere == 8) && (population > 5 && population < 9)
+                && (planGov > 3 && planGov < 10)) {
+            tradeClassifications.add(TradeClassifications.Rich);
+        } else if ((atmosphere > 1 && atmosphere < 6) && hydro < 4) {
+            tradeClassifications.add(TradeClassifications.Poor);
+        }
+        return tradeClassifications;
     }
 
 

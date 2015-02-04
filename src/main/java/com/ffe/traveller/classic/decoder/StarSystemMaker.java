@@ -8,6 +8,6 @@ import java.util.HashMap;
 public class StarSystemMaker {
 
 	public StarSystem CreateStarSystem() {
-
+        return new StarSystem();
 	}
 }

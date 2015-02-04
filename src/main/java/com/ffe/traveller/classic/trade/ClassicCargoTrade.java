@@ -22,19 +22,19 @@ public class ClassicCargoTrade {
 	int cargoMult[] = {10, 5};
 	int cargoOnOffer[] = new int[3];
 	Random generator = new Random();
-	
+
 	/**
 	 * @param from
 	 * @param to
-	 * 
+	 *
 	 * Create for cargo trade
 	 */
 	public ClassicCargoTrade(StarSystem from, StarSystem to){
-		
+
 		major = 0;
 		minor = 0;
 		incidental = 0;
-		
+
 		if(from.getZone() == TravelZone.Red){
 			 major = -1;
 			 minor = -1;
@@ -42,21 +42,21 @@ public class ClassicCargoTrade {
 		 }else if(from.getZone() == TravelZone.Amber){
 			 major = -1;
 		 }
-		
+
 		getDieMod(from, to);
 		cargoOnOffer = getCargoTonnage(from);
 	}
-	
-	
+
+
 	/**
 	 * @return
-	 * returns 3 position integer array advising amount of tonnage in cargo for Major at 0, Minor at 1 and 
+	 * returns 3 position integer array advising amount of tonnage in cargo for Major at 0, Minor at 1 and
 	 * incidental at 2
 	 */
 	private int[] getCargoTonnage(StarSystem from) {
 		int[] cargoAmount = new int[3];				//for return type
-		int population = from.getProfile().getPop();//for population switch statement
-		
+		int population = from.getProfile().getPopulation();//for population switch statement
+
 		//Switch statement based on population of planet for cargo availability
 		switch(population){
 		case 0:
@@ -72,7 +72,7 @@ public class ClassicCargoTrade {
 			}
 			cargoAmount[2] = 0;
 			break;
-		case 2: 
+		case 2:
 			if(major != -1){
 				cargoAmount[0] = rollDiceWithModifier(1, (-2 + dieMod)) * cargoMult[0];
 			}
@@ -144,16 +144,16 @@ public class ClassicCargoTrade {
 		default:
 			for(int i = 0; i < cargoAmount.length; i++){
 				cargoAmount[i] = 0;
-			}	
+			}
 		}
-		
+
 		//make sure there are no minus cargo results
 		for(int i = 0; i < cargoAmount.length; i++){
 			if(cargoAmount[i] < 0){
 				cargoAmount[i] = 0;
 			}
 		}
-		
+
 		//return
 		return cargoAmount;
 	}
@@ -163,9 +163,9 @@ public class ClassicCargoTrade {
 	 * Determines the Die Modifier for the check based on destination world
 	 */
 	private void getDieMod(StarSystem from, StarSystem to) {
-		if(to.getProfile().getPop() < 5){
+		if(to.getProfile().getPopulation() < 5){
 			dieMod -= 4;
-		}else if(to.getProfile().getPop()>7){
+		}else if(to.getProfile().getPopulation()>7){
 			dieMod += 1;
 		}
 		

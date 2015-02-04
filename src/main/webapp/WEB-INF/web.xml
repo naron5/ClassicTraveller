@@ -19,7 +19,17 @@
 
     <servlet-mapping>
         <servlet-name>jersey-servlet</servlet-name>
-        <url-pattern>traveller/*</url-pattern>
+        <url-pattern>/traveller/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>worlds-servlet</servlet-name>
+        <servlet-class>com.ffe.traveller.controllers.WorldController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>worlds-servlet</servlet-name>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

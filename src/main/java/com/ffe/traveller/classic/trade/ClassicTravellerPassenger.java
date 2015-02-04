@@ -4,7 +4,9 @@
 package com.ffe.traveller.classic.trade;
 
 
+import com.ffe.traveller.classic.decoder.Planet;
 import com.ffe.traveller.classic.decoder.StarSystem;
+import com.ffe.traveller.classic.decoder.TravelZone;
 
 import static com.ffe.traveller.util.DiceGenerator.*;
 
@@ -30,7 +32,7 @@ public class ClassicTravellerPassenger {
 		middle = 0;
 		low = 0;
 		
-		if(to.getZone()[0]){
+		if(to.getZone() == TravelZone.Red){
 			 middle = -1;
 			 low = -1;
 		}
@@ -46,7 +48,7 @@ public class ClassicTravellerPassenger {
 	 */
 	private int[] getPassengers(StarSystem from) {
 		int[] passengers = new int[3];					// this for the return
-		int population = from.getMainWorld().getProfile().getPop();	//StarSystem population for switch
+		int population = from.getMainWorld().getProfile().getPopulation();	//StarSystem population for switch
 		int temp = 0;									//To ensure it is a positive number
 		
 		switch(population){
@@ -65,7 +67,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = rollDiceWithModifier(2, -6+dieMod);
+					temp = rollDiceWithModifier(2, -6 + dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -105,7 +107,7 @@ public class ClassicTravellerPassenger {
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(2, -(rollDice(1, 6))+dieMod);
+					temp = rollDiceWithModifier(2, -(rollDice(1, 6)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -129,7 +131,7 @@ public class ClassicTravellerPassenger {
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(2, -(rollDice(1, 6))+dieMod);
+					temp = rollDiceWithModifier(2, -(rollDice(1, 6)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -137,7 +139,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = rollDiceWithModifier(3, -(rollDice(1, 6))+dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(1, 6)) + dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -153,7 +155,7 @@ public class ClassicTravellerPassenger {
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(3, -(rollDice(2, 6))+dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(2, 6)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -161,7 +163,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = rollDiceWithModifier(3, -(rollDice(1, 6))+dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(1, 6)) + dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -177,7 +179,7 @@ public class ClassicTravellerPassenger {
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(3, -(rollDice(2, 6))+dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(2, 6)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -201,7 +203,7 @@ public class ClassicTravellerPassenger {
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(3, -(rollDice(1, 6))+dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(1, 6)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -225,7 +227,7 @@ public class ClassicTravellerPassenger {
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(3, -(rollDice(1, 6))+dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(1, 6)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -302,19 +304,19 @@ public class ClassicTravellerPassenger {
 	 * 
 	 */
 	private void getDieMod(StarSystem from, StarSystem to) {
-		if(to.getMainWorld().getProfile().getPop() < 5){
+		if(to.getProfile().getPopulation() < 5){
 			dieMod -= 3;
-		}else if(to.getMainWorld().getProfile().getPop()>7){
+		}else if(to.getProfile().getPopulation()>7){
 			dieMod += +3;
 		}
 		
-		if(to.getZone()[0]){
+		if(to.getZone() == TravelZone.Red){
 			dieMod -= 12;
-		}else if(to.getZone()[1]){
+		}else if(to.getZone() == TravelZone.Amber){
 			dieMod -= 6;
 		}
 		
-		dieMod += from.getMainWorld().getProfile().getTechLev() - to.getMainWorld().getProfile().getTechLev();
+		dieMod += from.getProfile().getTechLev() - to.getProfile().getTechLev();
 		
 	}
 	

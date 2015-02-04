@@ -5,20 +5,9 @@
  */
 package com.ffe.traveller.classic.decoder;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.ffe.traveller.util.DiceGenerator;
 
 import static com.ffe.traveller.util.DiceGenerator.*;
-
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.yaml.snakeyaml.Yaml;
 
 
 public class UniversalPlanetaryProfileMaker {
@@ -56,9 +45,9 @@ public class UniversalPlanetaryProfileMaker {
         return upp;
     }
 
-    public UniversalPlanetaryProfile CreateUniversalPlanetaryProfile(Starport starportType, Integer planetSize,
+    public static UniversalPlanetaryProfile CreateUniversalPlanetaryProfile(Starport starportType, Integer planetSize,
                                                                      Integer planetAtmosphere, Integer hydroPercent, Integer population,
-                                                                     Integer planetGovernment, Integer law, Integer techLevel) {
+                                                                     Integer planetGovernment, Integer law) {
 
         int upperBound = 12;
         int lowerBound = 0;

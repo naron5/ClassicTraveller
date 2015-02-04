@@ -72,9 +72,9 @@ public class ClassicSpeculative {
 
 		type = Goods.get(choice);
 		basePrice = BasePrices.get(choice);
-
+        TradeClassifications[] classifications = new TradeClassifications[1];
 		for (TradeClassifications tc : from.getProfile()
-				.getTradeClassifications()) {
+				.getTradeClassifications().toArray(classifications)) {
 
 			int classification = convertTradeClassification(tc);
 
@@ -96,7 +96,7 @@ public class ClassicSpeculative {
 
 		// Die mod for sale
 		for (TradeClassifications tc : to.getProfile()
-				.getTradeClassifications()) {
+				.getTradeClassifications().toArray(classifications)) {
 
 			int classification = convertTradeClassification(tc);
 				dieModSell += resaleMods.get(choice).get(classification);

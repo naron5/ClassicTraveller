@@ -12,4 +12,8 @@ public class StarSystem {
     private HashMap<Integer, Planet> minorPlanets;
     @Getter @Setter(AccessLevel.PROTECTED)
     private TravelZone zone;
+
+    public UniversalPlanetaryProfile getProfile(){
+        return mainWorld.getProfile();
+    }
 }

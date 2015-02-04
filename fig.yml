@@ -1,6 +1,13 @@
 travellerApp:
   image: tomcat:8.0-jre7
+  links:
+    - travellerElasticSearch:elastic-search.darkmane.me
+    - travellerDb:mongo.darkmane.me
 travellerDb:
   image: dockerfile/mongodb
 travellerElasticSearch:
   image: dockerfile/elasticsearch
+  expose:
+    - "9600"
+  ports: 
+    - "9600:9600"

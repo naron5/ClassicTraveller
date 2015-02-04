@@ -35,10 +35,10 @@ public class Planet {
      */
     protected Planet() {
         name = "Unnamed";
-        profile = new UniversalPlanetaryProfile();
+        profile = new UniversalPlanetaryProfile(Starport.C, 7, 7, 7, 7, 7, 7);
         hexLocation = -1;
 
-        details = name + "  " + hexLocation + "\n" + profile.getDescription();
+        details = name + "  " + hexLocation;
         System.out.println(details);
     }
 
@@ -62,9 +62,9 @@ public class Planet {
             hexLocation = -1;
         }
 
-        profile = new UniversalPlanetaryProfile();
+        profile = new UniversalPlanetaryProfile(Starport.C, 7, 7, 7, 7, 7, 7);
 
-        details = name + "  " + hexLocation + "\n" + profile.getDescription();
+        details = name + "  " + hexLocation;
         System.out.println(details);
     }
 
@@ -85,7 +85,7 @@ public class Planet {
         }
 
         profile = upp;
-        details = name + "  " + hexLocation + "\n" + profile.getDescription();
+        details = name + "  " + hexLocation;
         System.out.println(details);
     }
 
