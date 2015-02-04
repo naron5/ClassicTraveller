@@ -14,6 +14,10 @@
             <param-name>javax.ws.rs.Application</param-name>
             <param-value>com.ffe.traveller.TravellerApp</param-value>
         </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -25,6 +29,10 @@
     <servlet>
         <servlet-name>worlds-servlet</servlet-name>
         <servlet-class>com.ffe.traveller.controllers.WorldController</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
     </servlet>
 
     <servlet-mapping>

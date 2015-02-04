@@ -79,21 +79,15 @@ public class UniversalPlanetaryProfile {
 
     }
 
-    @SuppressWarnings("unchecked")
+
     private static void loadProperties() {
         if (propertyMap != null)
             return;
 
-        InputStream input;
-        try {
-            input = new FileInputStream(new File(
-                    "src/properties/universal_planetary_profile.yml"));
-            Yaml yaml = new Yaml();
-            propertyMap = (Map<String, Object>) yaml.load(input);
-        } catch (FileNotFoundException e) {
 
-            e.printStackTrace();
-        }
+        InputStream input = UniversalPlanetaryProfile.class.getResourceAsStream("universal_planetary_profile.yml");
+        Yaml yaml = new Yaml();
+        propertyMap = (Map<String, Object>) yaml.load(input);
 
     }
 
@@ -104,7 +98,7 @@ public class UniversalPlanetaryProfile {
     }
 
     public String Atmosphere() {
-        @SuppressWarnings("unchecked")
+
         ArrayList<String> atmosArray = (ArrayList<String>) propertyMap.get("Atmosphere");
 
         return atmosArray.get(atmosphere);
@@ -124,19 +118,19 @@ public class UniversalPlanetaryProfile {
     }
 
     public String Population() {
-        @SuppressWarnings("unchecked")
+
         ArrayList<String> popArray = (ArrayList<String>) propertyMap.get("Population");
         return popArray.get(population);
     }
 
     public String Government() {
-        @SuppressWarnings("unchecked")
+
         ArrayList<String> govArray = (ArrayList<String>) propertyMap.get("Government");
         return govArray.get(planGov);
     }
 
     public String LawLevel() {
-        @SuppressWarnings("unchecked")
+
         ArrayList<String> lawArray = (ArrayList<String>) propertyMap.get("LawLevel");
         return lawArray.get(lawLevel);
 
