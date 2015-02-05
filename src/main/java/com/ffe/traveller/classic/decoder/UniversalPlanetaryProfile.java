@@ -19,6 +19,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.AccessLevel;
 
+import javax.ws.rs.FormParam;
+
 public class UniversalPlanetaryProfile {
 
     @Getter
@@ -50,6 +52,10 @@ public class UniversalPlanetaryProfile {
     boolean debug = false;
 
     private static Map<String, Object> propertyMap;
+
+    public UniversalPlanetaryProfile() {
+
+    }
 
 
     protected UniversalPlanetaryProfile(Starport port, Integer size, Integer atmos, Integer water,

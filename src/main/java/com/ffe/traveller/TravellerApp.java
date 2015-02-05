@@ -22,11 +22,7 @@ public class TravellerApp extends ResourceConfig {
 
     static {
         loadProperties();
-//        TransportClient cl = new TransportClient();
-//        InetSocketTransportAddress addr = new InetSocketTransportAddress(properties.getProperty("elastic_search.server"),
-//                Integer.parseInt(properties.getProperty("elastic_search.port")));
-//        cl.addTransportAddress(addr);
-//        client = cl;
+
     }
 
     public TravellerApp() {
@@ -43,7 +39,13 @@ public class TravellerApp extends ResourceConfig {
     }
 
     public static Client ElasticSearchClient() {
-
+        if (client == null) {
+            TransportClient cl = new TransportClient();
+            InetSocketTransportAddress addr = new InetSocketTransportAddress(properties.getProperty("elastic_search.server"),
+                    Integer.parseInt(properties.getProperty("elastic_search.port")));
+            cl.addTransportAddress(addr);
+            client = cl;
+        }
 
         return client;
     }

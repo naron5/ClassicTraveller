@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class StarSystemMaker {
 
-	public StarSystem CreateStarSystem() {
+	public static StarSystem CreateStarSystem() {
         return new StarSystem();
 	}
 }

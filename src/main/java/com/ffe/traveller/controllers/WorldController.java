@@ -4,13 +4,11 @@ package com.ffe.traveller.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ffe.traveller.TravellerApp;
-import com.ffe.traveller.classic.decoder.StarSystem;
-import com.ffe.traveller.classic.decoder.Starport;
-import com.ffe.traveller.classic.decoder.UniversalPlanetaryProfile;
-import com.ffe.traveller.classic.decoder.UniversalPlanetaryProfileMaker;
+import com.ffe.traveller.classic.decoder.*;
 import org.elasticsearch.client.Client;
 
 import javax.servlet.http.HttpServlet;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -42,7 +40,7 @@ public class WorldController extends HttpServlet {
 
     @PUT
     @Path("/world")
-    public Response createWorld(@BeanParam StarSystem upp){
+    public Response writeWorld(@Valid UniversalPlanetaryProfile upp){
 
         Client esClient = TravellerApp.ElasticSearchClient();
 
@@ -56,7 +54,27 @@ public class WorldController extends HttpServlet {
         System.out.println(starSystemString);
 
 				
-        return Response.status(200).entity("Booyah").build();
+        return Response.status(200).entity(starSystemString).build();
+    }
+
+    @PUT
+    @Path("/world/generate")
+    public Response generateWorld(@Valid StarSystem star_system){
+
+        Client esClient = TravellerApp.ElasticSearchClient();
+        StarSystem newStarSystem = StarSystemMaker.CreateStarSystem();
+
+        ObjectMapper mapper = new ObjectMapper();
+        String starSystemString = "";
+        try{
+            starSystemString = mapper.writeValueAsString(newStarSystem);
+        } catch (JsonProcessingException jpe){
+            jpe.printStackTrace();
+        }
+        System.out.println(starSystemString);
+
+
+        return Response.status(200).entity(starSystemString).build();
     }
 
 }
