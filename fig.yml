@@ -7,10 +7,6 @@ travellerDb:
   image: dockerfile/mongodb
 travellerElasticSearch:
   image: dockerfile/elasticsearch
-  expose:
-    - "9600"
-  ports: 
-    - "9600:9600"
   ports:
     - "9200:9200"
   expose:
