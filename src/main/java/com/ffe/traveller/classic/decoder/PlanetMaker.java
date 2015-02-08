@@ -29,7 +29,7 @@ public class PlanetMaker {
     public static Planet CreatePlanet(@Null String planetName, @Null Integer hexLocale, @Null Starport starportType,
                                       @Null Integer planetSize, @Null Integer planetAtmosphere, @Null Integer hydroPercent,
                                       @Null Integer population, @Null Integer planetGovernment, @Null Integer law,
-                                      @Null Integer techLevel, @Null boolean navalBase, @Null boolean scoutBase) {
+                                      @Null Integer techLevel, @Null Boolean navalBase, @Null Boolean scoutBase) {
 
 
 
@@ -48,7 +48,7 @@ public class PlanetMaker {
             scoutBase = true;
         }
 
-        return new Planet(planetName, hexLocale, upp, techLevel, navalBase, scoutBase);
+        return new Planet(planetName, hexLocale, upp, navalBase, scoutBase);
 
     }
 

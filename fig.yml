@@ -9,5 +9,9 @@ travellerElasticSearch:
   image: dockerfile/elasticsearch
   ports:
     - "9200:9200"
+    - "9300:9300"
   expose:
     - "9200"
+    - "9300"
+  volumes:
+    - elasticsearch:/data

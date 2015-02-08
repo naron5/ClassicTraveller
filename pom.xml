@@ -10,7 +10,7 @@
         <jettyVersion>7.2.0.v20101020</jettyVersion>
         <jerseyVersion>2.6</jerseyVersion>
         <jacksonVersion>2.1.3</jacksonVersion>
-        <es.version>1.4.0</es.version>
+        <es.version>1.4.2</es.version>
         <slf4j.version>1.7.7</slf4j.version>
     </properties>
 
@@ -41,6 +41,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
                 <configuration>
                     <includes>
                         <include>test/java/**/*.java</include>

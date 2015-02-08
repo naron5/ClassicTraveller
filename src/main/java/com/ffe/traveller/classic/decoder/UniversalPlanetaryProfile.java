@@ -197,7 +197,9 @@ public class UniversalPlanetaryProfile {
         } else if (planGov == 13) {
             level -= 2;
         }
-        this.techLev = level;
+
+
+        this.techLev = level < 1 ? 1 : level;
 
 
     }

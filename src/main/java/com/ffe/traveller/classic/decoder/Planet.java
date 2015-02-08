@@ -72,12 +72,11 @@ public class Planet {
      * @param planetName
      * @param hexLocale
      * @param upp
-     * @param techLevel
      * @param navalBase
      * @param scoutBase  Generates a fully formed planet.  Hex location is expected but if it is
      *                   not yet placed put a negative number into the hexLocale parameter
      */
-    protected Planet(String planetName, @Null Integer hexLocale, UniversalPlanetaryProfile upp, int techLevel, boolean navalBase, boolean scoutBase) {
+    protected Planet(@Null String planetName, @Null Integer hexLocale, UniversalPlanetaryProfile upp, Boolean navalBase, Boolean scoutBase) {
         name = planetName;
 
         if (hexLocale != null) {

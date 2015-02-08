@@ -46,8 +46,8 @@ public class UniversalPlanetaryProfileMaker {
     }
 
     public static UniversalPlanetaryProfile CreateUniversalPlanetaryProfile(Starport starportType, Integer planetSize,
-                                                                     Integer planetAtmosphere, Integer hydroPercent, Integer population,
-                                                                     Integer planetGovernment, Integer law) {
+                                                                            Integer planetAtmosphere, Integer hydroPercent, Integer population,
+                                                                            Integer planetGovernment, Integer law) {
 
         int upperBound = 12;
         int lowerBound = 0;
@@ -59,11 +59,13 @@ public class UniversalPlanetaryProfileMaker {
             planetSize = rollDiceWithModifier(2, -2);
             // If planet size is null and atmosphere is not,
             // limit size to the range that could possibly result in the atmosphere value
-            lowerBound = planetAtmosphere + 7 - 12 < 0 ? 0 : planetAtmosphere + 7 - 12;
-            upperBound = planetAtmosphere + 7 - 2 > 0x0A ? 0x0A : planetAtmosphere + 7 - 2;
+
             if (planetAtmosphere != null && (planetSize < lowerBound || planetSize > upperBound)) {
+                lowerBound = planetAtmosphere + 7 - 12 < 0 ? 0 : planetAtmosphere + 7 - 12;
+                upperBound = planetAtmosphere + 7 - 2 > 0x0A ? 0x0A : planetAtmosphere + 7 - 2;
                 planetSize = rollDiceInRange(2, 0, lowerBound, upperBound);
             }
+            planetSize = planetSize > 10 ? 10 : planetSize;
         }
 
         if (planetAtmosphere == null) {
@@ -78,11 +80,13 @@ public class UniversalPlanetaryProfileMaker {
                     planetAtmosphere = rollDiceInRange(2, 0, lowerBound, upperBound);
                 }
             }
+            planetAtmosphere = planetAtmosphere > 12 ? 12 : planetAtmosphere;
         }
 
         if (hydroPercent == null) {
             int modifier = (planetAtmosphere < 2 || planetAtmosphere > 9) ? -11 : -7;
             hydroPercent = rollDiceWithModifier(2, modifier + planetAtmosphere);
+            hydroPercent = hydroPercent > 10 ? 10 : hydroPercent;
         }
 
         if (population == null) {
@@ -95,12 +99,14 @@ public class UniversalPlanetaryProfileMaker {
                     population = rollDiceInRange(2, 0, lowerBound, upperBound);
                 }
             }
+
+            population = population > 10 ? 10 : population;
         }
 
         if (planetGovernment == null) {
             planetGovernment = DiceGenerator.rollDiceWithModifier(2, (-7 + population));
 
-            if (law == null) {
+            if (law != null) {
                 lowerBound = law + 7 - 12 < 0 ? 0 : law + 7 - 12;
                 upperBound = law + 7 - 2 < 0 ? 0 : law + 7 - 2;
                 if (law < lowerBound || law > upperBound) {
@@ -108,18 +114,17 @@ public class UniversalPlanetaryProfileMaker {
                 }
             }
 
-            if (planetGovernment > 13) {
-                planetGovernment = 13;
-            }
+            planetGovernment = planetGovernment > 13 ? 13 : planetGovernment;
+
         }
 
         if (law == null) {
 
             law = rollDiceWithModifier(2, (-7 + planetGovernment));
 
-            if (law < 0) {
-                law = 0;
-            }
+            law = law < 0 ? 0 : law;
+
+            law = law > 9 ? 0 : law;
         }
 
         UniversalPlanetaryProfile upp = new UniversalPlanetaryProfile(starportType, planetSize,
