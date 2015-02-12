@@ -1,9 +1,10 @@
 package com.ffe.traveller.classic.decoder;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.Null;
-
-import lombok.*;
-
 import java.util.Random;
 
 /**
@@ -14,9 +15,14 @@ public class Planet {
     final static String PREFIX = "PSR ";
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private String name;
+    private String sector;
     @Getter
-    private String details;
+    @Setter(AccessLevel.PROTECTED)
+    private String subsector;
+    @Getter
+    @Setter(AccessLevel.PROTECTED)
+    private String name;
+
     @Getter
     @Setter(AccessLevel.PROTECTED)
     private int hexLocation;
@@ -38,8 +44,7 @@ public class Planet {
         profile = new UniversalPlanetaryProfile(Starport.C, 7, 7, 7, 7, 7, 7);
         hexLocation = -1;
 
-        details = name + "  " + hexLocation;
-        System.out.println(details);
+
     }
 
     /**
@@ -64,8 +69,7 @@ public class Planet {
 
         profile = new UniversalPlanetaryProfile(Starport.C, 7, 7, 7, 7, 7, 7);
 
-        details = name + "  " + hexLocation;
-        System.out.println(details);
+
     }
 
     /**
@@ -84,8 +88,7 @@ public class Planet {
         }
 
         profile = upp;
-        details = name + "  " + hexLocation;
-        System.out.println(details);
+
     }
 
     /**

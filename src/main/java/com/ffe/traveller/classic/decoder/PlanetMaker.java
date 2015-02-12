@@ -32,9 +32,29 @@ public class PlanetMaker {
                                       @Null Integer techLevel, @Null Boolean navalBase, @Null Boolean scoutBase) {
 
 
-
         UniversalPlanetaryProfile upp = UniversalPlanetaryProfileMaker.CreateUniversalPlanetaryProfile(starportType,
                 planetSize, planetAtmosphere, hydroPercent, population, planetGovernment, law);
+
+
+        if ((upp.getStarport() == Starport.A || upp.getStarport() == Starport.B)
+                && rollDice(1, 2) % 2 == 0) {
+            navalBase = true;
+        }
+
+        if ((upp.getStarport() == Starport.A || upp.getStarport() == Starport.B
+                || upp.getStarport() == Starport.C || upp.getStarport() == Starport.D)
+                && rollDice(1, 2) % 2 == 0) {
+            scoutBase = true;
+        }
+
+        return new Planet(planetName, hexLocale, upp, navalBase, scoutBase);
+
+    }
+
+    public static Planet CreatePlanet(@Null String planetName, @Null Integer hexLocale,
+                                      @Null UniversalPlanetaryProfile upp, @Null Boolean navalBase,
+                                      @Null Boolean scoutBase) {
+
 
 
         if ((upp.getStarport() == Starport.A || upp.getStarport() == Starport.B)

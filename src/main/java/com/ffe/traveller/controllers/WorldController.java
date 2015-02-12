@@ -1,28 +1,16 @@
 package com.ffe.traveller.controllers;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ffe.traveller.TravellerApp;
 import com.ffe.traveller.classic.decoder.*;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.indexedscripts.put.PutIndexedScriptRequest;
-import org.elasticsearch.action.indexedscripts.put.PutIndexedScriptResponse;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
 
 import javax.servlet.http.HttpServlet;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 /**
  * Created by darkmane on 1/13/15.
@@ -55,7 +43,7 @@ public class WorldController extends HttpServlet {
     @PUT
     @Path("/world")
     @Produces(MediaType.APPLICATION_JSON)
-    public IndexResponse writeWorld(@Valid UniversalPlanetaryProfile upp) throws Exception {
+    public IndexResponse writeWorld(@Valid Planet planet) throws Exception {
 
         Client esClient = TravellerApp.ElasticSearchClient();
 
@@ -63,7 +51,7 @@ public class WorldController extends HttpServlet {
         IndexResponse response = null;
 
 
-        response = esClient.prepareIndex("traveller", "world").setSource(mapper.writeValueAsString(upp)).execute().get();
+        response = esClient.prepareIndex("traveller", "world").setSource(mapper.writeValueAsString(planet)).execute().get();
 
         return response;
 
@@ -74,10 +62,10 @@ public class WorldController extends HttpServlet {
     @PUT
     @Path("/world/generate")
     @Produces(MediaType.APPLICATION_JSON)
-    public StarSystem generateWorld(@Valid UniversalPlanetaryProfile upp) {
+    public StarSystem generateWorld(@Valid Planet planet) {
 
 
-        StarSystem newStarSystem = StarSystemMaker.CreateStarSystem(upp);
+        StarSystem newStarSystem = StarSystemMaker.CreateStarSystem(planet);
 
         return newStarSystem;
     }

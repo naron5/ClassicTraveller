@@ -7,6 +7,8 @@ package com.ffe.traveller.classic.decoder;
 
 import com.ffe.traveller.util.DiceGenerator;
 
+import javax.validation.constraints.Null;
+
 import static com.ffe.traveller.util.DiceGenerator.*;
 
 
@@ -45,9 +47,9 @@ public class UniversalPlanetaryProfileMaker {
         return upp;
     }
 
-    public static UniversalPlanetaryProfile CreateUniversalPlanetaryProfile(Starport starportType, Integer planetSize,
-                                                                            Integer planetAtmosphere, Integer hydroPercent, Integer population,
-                                                                            Integer planetGovernment, Integer law) {
+    public static UniversalPlanetaryProfile CreateUniversalPlanetaryProfile(@Null Starport starportType, @Null Integer planetSize,
+                                                                            @Null Integer planetAtmosphere, @Null Integer hydroPercent, @Null Integer population,
+                                                                            @Null Integer planetGovernment, @Null Integer law) {
 
         int upperBound = 12;
         int lowerBound = 0;
