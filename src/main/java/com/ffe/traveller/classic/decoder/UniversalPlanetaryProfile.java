@@ -85,7 +85,7 @@ public class UniversalPlanetaryProfile {
 
     }
 
-
+    @SuppressWarnings("unchecked")
     private static void loadProperties() {
         if (propertyMap != null)
             return;
@@ -97,12 +97,14 @@ public class UniversalPlanetaryProfile {
 
     }
 
+    @SuppressWarnings("unchecked")
     public String Size() {
 
         return String.format((String) propertyMap.get("PlanetSize"),
                 diameter * 1000, diameter * 1600);
     }
 
+    @SuppressWarnings("unchecked")
     public String Atmosphere() {
 
         ArrayList<String> atmosArray = (ArrayList<String>) propertyMap.get("Atmosphere");
@@ -123,24 +125,28 @@ public class UniversalPlanetaryProfile {
         return rv;
     }
 
+    @SuppressWarnings("unchecked")
     public String Population() {
 
         ArrayList<String> popArray = (ArrayList<String>) propertyMap.get("Population");
         return popArray.get(population);
     }
 
+    @SuppressWarnings("unchecked")
     public String Government() {
 
         ArrayList<String> govArray = (ArrayList<String>) propertyMap.get("Government");
         return govArray.get(planGov);
     }
 
+    @SuppressWarnings("unchecked")
     public String LawLevel() {
 
         ArrayList<String> lawArray = (ArrayList<String>) propertyMap.get("LawLevel");
         return lawArray.get(lawLevel);
 
     }
+
 
     protected void rollTechLevel(int roll) {
         int level = DiceGenerator.rollDice(1);
@@ -206,7 +212,7 @@ public class UniversalPlanetaryProfile {
 
     public Set<TradeClassifications> getTradeClassifications() {
         // Agricultural
-        Set<TradeClassifications> tradeClassifications = new HashSet();
+        Set<TradeClassifications> tradeClassifications = new HashSet<>();
         if ((atmosphere > 3 && atmosphere < 10) && (hydro > 3 && hydro < 9)
                 && (population > 4 && population < 8)) {
             tradeClassifications.add(TradeClassifications.Agricultural);

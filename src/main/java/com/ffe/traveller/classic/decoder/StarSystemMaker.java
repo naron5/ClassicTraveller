@@ -1,14 +1,17 @@
 package com.ffe.traveller.classic.decoder;
 
 import com.ffe.traveller.util.Utility;
+import lombok.Getter;
 
 import javax.validation.constraints.Null;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Set;
 
 import static com.ffe.traveller.classic.decoder.Star.StellarClass.*;
 import static com.ffe.traveller.classic.decoder.Star.StellarSize.*;
 import static com.ffe.traveller.classic.decoder.Star.StarPosition.*;
+import static com.ffe.traveller.classic.decoder.StarSystem.*;
 import static com.ffe.traveller.util.DiceGenerator.roll;
 
 
@@ -20,6 +23,7 @@ public class StarSystemMaker {
     private static final int SOLITARY = 7;
     private static final int BINARY = 11;
     private static final int TRINARY = 12;
+
 
     public static StarSystem CreateStarSystem() {
         return new StarSystem();
@@ -34,7 +38,7 @@ public class StarSystemMaker {
 
         newWorld.setMainWorld(planet);
 
-        newWorld.setStars(generateStars(rng, planet.getProfile().getPopulation(), planet.getProfile().getAtmosphere());
+        newWorld.setStars(generateStars(rng, planet.getProfile().getPopulation(), planet.getProfile().getAtmosphere()));
 
 
 //        10. Determine rtar system details.
@@ -130,14 +134,20 @@ public class StarSystemMaker {
         return CreateStarSystem();
     }
 
-    private static Star generateCompanionStar(@Null Random rng, int classMod, int sizeRoll) {
+    private static Star generateCompanionStar(@Null Random rng, int classMod, int sizeRoll, Star.StarPosition position) {
         int rollClass = roll(rng);
         int rollSize = roll(rng);
+        int rollOrbit = roll(rng);
+        int orbitRoll = roll(rng);
+
+        int orbit = CENTER;
         Star.StellarClass sClass = M;
         Star.StellarSize sSize = D;
+        int orbits = 0;
 
         rollClass += classMod;
         rollSize += sizeRoll;
+        rollOrbit += position == TERTIARY ? 4 : 0;
 
         switch (rollClass) {
 
@@ -159,6 +169,7 @@ public class StarSystemMaker {
                 sClass = K;
                 break;
         }
+
 
         switch (rollSize) {
             case 0:
@@ -191,13 +202,43 @@ public class StarSystemMaker {
 
         }
 
-        return new Star(sClass, sSize);
+        if (rollOrbit < 4) {
+            orbit = NEAR_ORBIT;
+        } else if (rollOrbit == 12) {
+            orbit = FAR_ORBIT;
+        } else {
+            orbit = rollOrbit - 3;
+            if (rollOrbit > 6) {
+                orbit += roll(rng);
+            }
+        }
+
+        switch (sSize) {
+            case III:
+                orbitRoll += 4;
+            case Ia:
+            case Ib:
+            case II:
+                orbitRoll += 8;
+        }
+        switch (sClass) {
+            case M:
+                orbitRoll -= 4;
+            case K:
+                orbitRoll -= 2;
+        }
+
+        orbits = orbitRoll > 0 ? orbitRoll : 0;
+
+
+        return new Star(sClass, sSize, rollOrbit, orbits);
     }
 
     private static HashMap<Star.StarPosition, Star> generateStars(@Null Random rng, @Null Integer population, @Null Integer atmosphere) {
         int rollClass = roll(rng);
         int rollSize = roll(rng);
         int star = roll(rng);
+        int orbitRoll = roll(rng);
         HashMap<Star.StarPosition, Star> map = new HashMap<>();
 
 
@@ -207,6 +248,8 @@ public class StarSystemMaker {
         }
         Star.StellarClass sClass = M;
         Star.StellarSize sSize = V;
+        int orbits = 0;
+
         switch (rollClass) {
             case 0:
             case 1:
@@ -269,18 +312,45 @@ public class StarSystemMaker {
                 sSize = D;
                 break;
 
-
         }
 
-        map.put(PRIMARY, new Star(sClass, sSize));
+
+        switch (sSize) {
+            case III:
+                orbitRoll += 4;
+            case Ia:
+            case Ib:
+            case II:
+                orbitRoll += 8;
+        }
+        switch (sClass) {
+            case M:
+                orbitRoll -= 4;
+            case K:
+                orbitRoll -= 2;
+        }
+
+        orbits = orbitRoll > 0 ? orbitRoll : 0;
+
+        map.put(PRIMARY, new Star(sClass, sSize, CENTER, orbits));
 
         if (star > BINARY) {
-            map.put(SECONDARY, generateCompanionStar(rng, rollClass, rollSize));
+            map.put(SECONDARY, generateCompanionStar(rng, rollClass, rollSize, SECONDARY));
         }
 
         if (star > TRINARY) {
-            map.put(TERTIARY, generateCompanionStar(rng, rollClass, rollSize));
+            map.put(TERTIARY, generateCompanionStar(rng, rollClass, rollSize, TERTIARY));
         }
         return map;
     }
+
+
+    private static double lookupLuminosity(Star s){
+        double lum = 0.0;
+
+        return lum;
+    }
+
+
+
 }
