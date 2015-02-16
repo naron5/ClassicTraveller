@@ -1,12 +1,11 @@
 package com.ffe.traveller.classic.decoder;
 
 import com.ffe.traveller.util.Utility;
+import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
 
 import javax.validation.constraints.Null;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static com.ffe.traveller.classic.decoder.Star.StellarClass.*;
 import static com.ffe.traveller.classic.decoder.Star.StellarSize.*;
@@ -34,12 +33,233 @@ public class StarSystemMaker {
                 + "|" + (new Integer(planet.getHexLocation())).toString();
         Random rng = new Random(Utility.getSHA256(hashSeed));
 
-        StarSystem newWorld = new StarSystem();
+
+
+
+
+
+//        11. Place known components.
+//                A. Place gas giants.
+//        B. Place planetoid belts.
+//                C. Place main world in habitable
+//        zone.
+                StarSystem newWorld = new StarSystem();
+        int orbitRoll = roll(rng);
 
         newWorld.setMainWorld(planet);
 
+//        10. Determine star system details.
+//        A. System nature (solitary, binary,
+//                or trinary star system).
+//        B. Primary star type and size.
+//                DM+4 if main world has population 8+
+//                or atmosphere 4 - 9.
+//        C. Companion star type and size.
+//                D. Companion orbit.
+//                E. Number of orbits available for
+//        each star.
         newWorld.setStars(generateStars(rng, planet.getProfile().getPopulation(), planet.getProfile().getAtmosphere()));
 
+//        F. Unavailable, inner, habitable,
+//                and outer zones within the system.
+        switch (newWorld.getStars().get(PRIMARY).getStarSize()) {
+            case III:
+                orbitRoll += 4;
+            case Ia:
+            case Ib:
+            case II:
+                orbitRoll += 8;
+        }
+        switch (newWorld.getStars().get(PRIMARY).getAClass()) {
+            case M:
+                orbitRoll -= 4;
+            case K:
+                orbitRoll -= 2;
+        }
+
+        int orbits = orbitRoll > 0 ? orbitRoll : 0;
+
+        newWorld.setMaxOrbits(orbits);
+        
+				
+				Set<Integer> empty = new HashSet<>();
+
+				int emptyRoll = roll(rng, 1);
+				int numberEmptyRoll = roll(rng, 1);
+				if(newWorld.getStars().get(PRIMARY).getAClass() == B ||
+				   newWorld.getStars().get(PRIMARY).getAClass() == A) {
+          emptyRoll += 1;
+          numberEmptyRoll += 1;
+		 	  }
+
+        int numberEmpty;
+			  
+				if(emptyRoll >= 4) {
+					switch(numberEmptyRoll) {
+						case 1: case 2:
+							numberEmpty = 1;
+						case 3:
+							numberEmpty = 2;
+						default:
+							numberEmpty = 3;
+					}
+				}
+
+				for(int counter = 0; counter < numberEmpty; counter ++) {
+					int emptyOrbit = roll(rng);
+					while(emptyOrbit >= orbits || !empty.Contains(emptyOrbit)) {
+					  emptyOrbit = roll(rng);
+					}
+				}
+
+				
+
+        Set<Integer> availableOrbits = new HashSet(newWorld.getHabitableOrbits());
+        availableOrbits.addAll(newWorld.getOuterOrbits());
+				availableOrbits.removeAll(empty);
+
+//                G. Captured planets and empty
+//        orbits.
+//                H. Presence and quantity of gas
+//        giants.
+        int gasGiants = roll(rng);
+        int numberOfGasGiants = 0;
+
+        if (gasGiants < 10) {
+            int numberGGRoll = roll(rng);
+
+            switch (numberGGRoll) {
+                case 1:
+                case 2:
+                case 3:
+                    numberOfGasGiants = 1;
+                    break;
+                case 4:
+                case 5:
+                    numberOfGasGiants = 2;
+                    break;
+                case 6:
+                case 7:
+                    numberOfGasGiants = 3;
+                    break;
+                case 8:
+                case 9:
+                case 10:
+                    numberOfGasGiants = 4;
+                    break;
+                case 11:
+                case 12:
+                    numberOfGasGiants = 5;
+                    break;
+            }
+
+            // Place Gas Giants
+            numberOfGasGiants = numberOfGasGiants > newWorld.getMaxOrbits() ? newWorld.getMaxOrbits() : numberOfGasGiants;
+            for (int counter = 0; counter < numberOfGasGiants; counter++) {
+                List<Integer> orbitList = new ArrayList<>();
+                if (availableOrbits.isEmpty()) {
+                    availableOrbits.addAll(newWorld.getInnerOrbits());
+                }
+                for (Integer orbit : availableOrbits) {
+                    for (int counter2 = 0; counter2 < orbit; counter2++) {
+                        orbitList.add(orbit);
+                    }
+                }
+
+                int listIndex = rng.nextInt(orbitList.size());
+                int orbitNum = orbitList.get(listIndex);
+                Planet gg = new GasGiant();
+                newWorld.getOrbits().put(orbitNum, gg);
+                availableOrbits.remove(orbitNum);
+
+            }
+        }
+
+//                I. Presence and quantity of
+//        planetoid belts.
+        int planetoidBelt = roll(rng);
+        planetoidBelt -= numberOfGasGiants;
+        planetoidBelt = planetoidBelt < 0 ? 0 : planetoidBelt;
+        if (planetoidBelt < 7) {
+
+            int numberPBRoll = roll(rng);
+            int numberOfPlanetoidBelts = 0;
+            numberPBRoll = (numberPBRoll - numberOfGasGiants < 0 ? 0 : numberPBRoll - numberOfGasGiants);
+
+            switch (numberPBRoll) {
+                case 0:
+                    numberOfPlanetoidBelts = 3;
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                    numberOfPlanetoidBelts = 2;
+                    break;
+
+                default:
+                    numberOfPlanetoidBelts = 1;
+                    break;
+            }
+
+            numberOfPlanetoidBelts = numberOfPlanetoidBelts > (newWorld.getMaxOrbits() - numberOfGasGiants) ?
+                    (newWorld.getMaxOrbits() - numberOfGasGiants) : numberOfPlanetoidBelts;
+
+            // Place planetoid belts
+            for (int counter = 0; counter < numberOfPlanetoidBelts; counter++) {
+                List<Integer> orbitList = new ArrayList<>();
+                if (availableOrbits.isEmpty()) {
+                    availableOrbits.addAll(newWorld.getInnerOrbits());
+                }
+                for (Integer orbit : availableOrbits) {
+                    int probablity = orbit;
+                    if (newWorld.getOrbits().containsKey(orbit + 1) &&
+                        (newWorld.getOrbits().get(orbit + 1).getPlanetType() == Planet.Type.LARGE_GAS_GIANT ||
+                         newWorld.getOrbits().get(orbit + 1).getPlanetType() == Planet.Type.SMALL_GAS_GIANT)) {
+                        probablity *= 2;
+
+                    }
+                    for (int counter2 = 0; counter2 < probablity; counter2++) {
+                        orbitList.add(orbit);
+                    }
+                }
+
+                int listIndex = rng.nextInt(orbitList.size());
+                int orbitNum = orbitList.get(listIndex);
+                Planet pb = PlanetMaker.CreatePlanet(null, null, null, 0, null, null, null, null, null, null, null, null);
+                newWorld.getOrbits().put(orbitNum, pb);
+                availableOrbits.remove(orbitNum);
+            }
+
+        }
+
+
+        // Place Mainworld
+        Set<Integer> hz = newWorld.calculateHabitableZone(planet);
+        Set<Integer> all = new HashSet();
+        all.addAll(newWorld.getInnerOrbits());
+        all.addAll(newWorld.getHabitableOrbits());
+        all.addAll(newWorld.getOuterOrbits());
+
+        List<Integer> unoccupied = new ArrayList();
+				hz.removeAll(newWorld.getOrbits());
+        
+				if (hz.isEmpty()) {
+            hz = ImmutableSet.copyOf(all);
+        }
+
+				hz.removeAll(newWorld.getOrbits());
+
+				Boolean mainWorldIsSatellite = hz.isEmpty();
+				if (mainWorldIsSatellite) {
+
+				} else {
+          Integer mainWorldOrbit = hz.get(rng.nextInt(unoccupied.size()));
+          newWorld.getOrbits().put(mainWorldOrbit, newWorld.getMainWorld());
+				}
+				
 
 //        10. Determine rtar system details.
 //A. Svrrem nature Irolitary, binary,
@@ -180,7 +400,6 @@ public class StarSystemMaker {
                 break;
             case 2:
                 sSize = II;
-
                 break;
             case 3:
                 sSize = III;
@@ -231,7 +450,7 @@ public class StarSystemMaker {
         orbits = orbitRoll > 0 ? orbitRoll : 0;
 
 
-        return new Star(sClass, sSize, rollOrbit, orbits);
+        return new Star(sClass, sSize, rollOrbit);
     }
 
     private static HashMap<Star.StarPosition, Star> generateStars(@Null Random rng, @Null Integer population, @Null Integer atmosphere) {
@@ -315,24 +534,7 @@ public class StarSystemMaker {
         }
 
 
-        switch (sSize) {
-            case III:
-                orbitRoll += 4;
-            case Ia:
-            case Ib:
-            case II:
-                orbitRoll += 8;
-        }
-        switch (sClass) {
-            case M:
-                orbitRoll -= 4;
-            case K:
-                orbitRoll -= 2;
-        }
-
-        orbits = orbitRoll > 0 ? orbitRoll : 0;
-
-        map.put(PRIMARY, new Star(sClass, sSize, CENTER, orbits));
+        map.put(PRIMARY, new Star(sClass, sSize, CENTER));
 
         if (star > BINARY) {
             map.put(SECONDARY, generateCompanionStar(rng, rollClass, rollSize, SECONDARY));
@@ -345,12 +547,11 @@ public class StarSystemMaker {
     }
 
 
-    private static double lookupLuminosity(Star s){
+    private static double lookupLuminosity(Star s) {
         double lum = 0.0;
 
         return lum;
     }
-
 
 
 }

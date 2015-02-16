@@ -64,7 +64,7 @@ public class ClassicSpeculative {
         quantity[8] = rollDice(5) * 10;
 
         // get details
-        choice = rollDice(1, 36) - 1;
+        choice = rollDice(6) - 1;
 
         type = Goods.get(choice);
         basePrice = BasePrices.get(choice);

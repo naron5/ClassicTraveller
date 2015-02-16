@@ -76,7 +76,7 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 2: 
-				temp = rollDiceWithModifier(1, -(rollDice(1, 6)) + dieMod);
+				temp = rollDiceWithModifier(1, -(rollDice(1)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
@@ -100,14 +100,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 3:
-				temp = rollDiceWithModifier(2, -(rollDice(2, 6)) + dieMod);
+				temp = rollDiceWithModifier(2, -(rollDice(2)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(2, -(rollDice(1, 6)) + dieMod);
+					temp = rollDiceWithModifier(2, -(rollDice(1)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -124,14 +124,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 4:
-				temp = rollDiceWithModifier(2, -(rollDice(1, 6)) + dieMod);
+				temp = rollDiceWithModifier(2, -(rollDice(1)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(2, -(rollDice(1, 6)) + dieMod);
+					temp = rollDiceWithModifier(2, -(rollDice(1)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -139,7 +139,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = rollDiceWithModifier(3, -(rollDice(1, 6)) + dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(1)) + dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -148,14 +148,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 5:
-				temp = rollDiceWithModifier(2, -(rollDice(1, 6)) + dieMod);
+				temp = rollDiceWithModifier(2, -(rollDice(1)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(3, -(rollDice(2, 6)) + dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(2)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -163,7 +163,7 @@ public class ClassicTravellerPassenger {
 					}
 				}
 				if(low != -1){
-					temp = rollDiceWithModifier(3, -(rollDice(1, 6)) + dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(1)) + dieMod);
 					if(temp > 0){
 						passengers[2] = temp;
 					}else{
@@ -172,14 +172,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 6: 
-				temp = rollDiceWithModifier(3, -(rollDice(2, 6)) + dieMod);
+				temp = rollDiceWithModifier(3, -(rollDice(2)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(3, -(rollDice(2, 6)) + dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(2)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -196,14 +196,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 7:
-				temp = rollDiceWithModifier(3, -(rollDice(2, 6)) + dieMod);
+				temp = rollDiceWithModifier(3, -(rollDice(2)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(3, -(rollDice(1, 6)) + dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(1)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -220,14 +220,14 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 8: 
-				temp = rollDiceWithModifier(3, -(rollDice(1, 6)) + dieMod);
+				temp = rollDiceWithModifier(3, -(rollDice(1)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{
 					passengers[0] = 0;
 				}
 				if(middle != 1){
-					temp = rollDiceWithModifier(3, -(rollDice(1, 6)) + dieMod);
+					temp = rollDiceWithModifier(3, -(rollDice(1)) + dieMod);
 					if(temp > 0){
 						passengers[1] = temp;
 					}else{
@@ -244,7 +244,7 @@ public class ClassicTravellerPassenger {
 				}
 				break;
 			case 9:
-				temp = rollDiceWithModifier(3, -(rollDice(1, 6)) + dieMod);
+				temp = rollDiceWithModifier(3, -(rollDice(1)) + dieMod);
 				if(temp > 0){
 					passengers[0] = temp;
 				}else{

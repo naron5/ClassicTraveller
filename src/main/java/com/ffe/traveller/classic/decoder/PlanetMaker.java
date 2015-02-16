@@ -37,13 +37,13 @@ public class PlanetMaker {
 
 
         if ((upp.getStarport() == Starport.A || upp.getStarport() == Starport.B)
-                && rollDice(1, 2) % 2 == 0) {
+                && rollDice(1) % 2 == 0) {
             navalBase = true;
         }
 
         if ((upp.getStarport() == Starport.A || upp.getStarport() == Starport.B
                 || upp.getStarport() == Starport.C || upp.getStarport() == Starport.D)
-                && rollDice(1, 2) % 2 == 0) {
+                && rollDice(1) % 2 == 0) {
             scoutBase = true;
         }
 
@@ -55,20 +55,25 @@ public class PlanetMaker {
                                       @Null UniversalPlanetaryProfile upp, @Null Boolean navalBase,
                                       @Null Boolean scoutBase) {
 
+        UniversalPlanetaryProfile profile = upp;
 
-
-        if ((upp.getStarport() == Starport.A || upp.getStarport() == Starport.B)
-                && rollDice(1, 2) % 2 == 0) {
-            navalBase = true;
+        if (upp == null) {
+            profile = UniversalPlanetaryProfileMaker.CreateUniversalPlanetaryProfile();
         }
 
-        if ((upp.getStarport() == Starport.A || upp.getStarport() == Starport.B
-                || upp.getStarport() == Starport.C || upp.getStarport() == Starport.D)
-                && rollDice(1, 2) % 2 == 0) {
-            scoutBase = true;
+        if (navalBase == null) {
+            int navalRoll = rollDice(1);
+            navalBase = ((profile.getStarport() == Starport.A || profile.getStarport() == Starport.B)
+                    && navalRoll % 2 == 0);
         }
 
-        return new Planet(planetName, hexLocale, upp, navalBase, scoutBase);
+        if (scoutBase == null) {
+            int scoutRoll = rollDice(1);
+            scoutBase = ((profile.getStarport() == Starport.A || profile.getStarport() == Starport.B
+                    || profile.getStarport() == Starport.C || profile.getStarport() == Starport.D)
+                    && scoutRoll % 2 == 0);
+        }
+        return new Planet(planetName, hexLocale, profile, navalBase, scoutBase);
 
     }
 

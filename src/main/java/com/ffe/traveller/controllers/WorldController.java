@@ -23,7 +23,7 @@ public class WorldController extends HttpServlet {
     @GET
     @Path("/world")
     @Produces(MediaType.APPLICATION_JSON)
-    public UniversalPlanetaryProfile[] searchAllWorlds(@PathParam("ruleSet") String rules,
+    public Planet[] searchAllWorlds(@PathParam("ruleSet") String rules,
                                                      @QueryParam("sector") String sector,
                                                      @QueryParam("subsector") String subsector,
                                                      @QueryParam("hex") String hex,
@@ -34,8 +34,11 @@ public class WorldController extends HttpServlet {
         UniversalPlanetaryProfile upp = UniversalPlanetaryProfileMaker.CreateUniversalPlanetaryProfile(
                 Starport.C, 7, 7, 7, 7, 7, 7
         );
-        UniversalPlanetaryProfile[] arr = new UniversalPlanetaryProfile[1];
-        arr[0] = upp;
+
+        Planet p = PlanetMaker.CreatePlanet(null,null,null,null,null);
+
+        Planet[] arr = new Planet[1];
+        arr[0] = p;
         return arr;
 
     }
