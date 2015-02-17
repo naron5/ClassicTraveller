@@ -11,7 +11,7 @@ import static com.ffe.traveller.classic.decoder.Star.StellarClass.*;
 import static com.ffe.traveller.classic.decoder.Star.StellarSize.*;
 import static com.ffe.traveller.classic.decoder.Star.StarPosition.*;
 import static com.ffe.traveller.classic.decoder.StarSystem.*;
-import static com.ffe.traveller.util.DiceGenerator.roll;
+import static com.ffe.traveller.util.DiceGenerator.*;
 
 
 /**
@@ -34,16 +34,12 @@ public class StarSystemMaker {
         Random rng = new Random(Utility.getSHA256(hashSeed));
 
 
-
-
-
-
 //        11. Place known components.
 //                A. Place gas giants.
 //        B. Place planetoid belts.
 //                C. Place main world in habitable
 //        zone.
-                StarSystem newWorld = new StarSystem();
+        StarSystem newWorld = new StarSystem();
         int orbitRoll = roll(rng);
 
         newWorld.setMainWorld(planet);
@@ -80,43 +76,43 @@ public class StarSystemMaker {
         int orbits = orbitRoll > 0 ? orbitRoll : 0;
 
         newWorld.setMaxOrbits(orbits);
-        
-				
-				Set<Integer> empty = new HashSet<>();
 
-				int emptyRoll = roll(rng, 1);
-				int numberEmptyRoll = roll(rng, 1);
-				if(newWorld.getStars().get(PRIMARY).getAClass() == B ||
-				   newWorld.getStars().get(PRIMARY).getAClass() == A) {
-          emptyRoll += 1;
-          numberEmptyRoll += 1;
-		 	  }
 
-        int numberEmpty;
-			  
-				if(emptyRoll >= 4) {
-					switch(numberEmptyRoll) {
-						case 1: case 2:
-							numberEmpty = 1;
-						case 3:
-							numberEmpty = 2;
-						default:
-							numberEmpty = 3;
-					}
-				}
+        Set<Integer> empty = new HashSet<>();
 
-				for(int counter = 0; counter < numberEmpty; counter ++) {
-					int emptyOrbit = roll(rng);
-					while(emptyOrbit >= orbits || !empty.Contains(emptyOrbit)) {
-					  emptyOrbit = roll(rng);
-					}
-				}
+        int emptyRoll = rollDice(rng, 1);
+        int numberEmptyRoll = rollDice(rng, 1);
+        if (newWorld.getStars().get(PRIMARY).getAClass() == B ||
+                newWorld.getStars().get(PRIMARY).getAClass() == A) {
+            emptyRoll += 1;
+            numberEmptyRoll += 1;
+        }
 
-				
+        int numberEmpty = 0;
+
+        if (emptyRoll >= 4) {
+            switch (numberEmptyRoll) {
+                case 1:
+                case 2:
+                    numberEmpty = 1;
+                case 3:
+                    numberEmpty = 2;
+                default:
+                    numberEmpty = 3;
+            }
+        }
+
+        while (empty.size() < numberEmpty) {
+            int emptyOrbit = roll(rng);
+            if (emptyOrbit < newWorld.getMaxOrbits()) {
+                empty.add(emptyOrbit);
+            }
+        }
+
 
         Set<Integer> availableOrbits = new HashSet(newWorld.getHabitableOrbits());
         availableOrbits.addAll(newWorld.getOuterOrbits());
-				availableOrbits.removeAll(empty);
+        availableOrbits.removeAll(empty);
 
 //                G. Captured planets and empty
 //        orbits.
@@ -155,19 +151,21 @@ public class StarSystemMaker {
 
             // Place Gas Giants
             numberOfGasGiants = numberOfGasGiants > newWorld.getMaxOrbits() ? newWorld.getMaxOrbits() : numberOfGasGiants;
+
+
             for (int counter = 0; counter < numberOfGasGiants; counter++) {
-                List<Integer> orbitList = new ArrayList<>();
+                List<Integer> orbitSet = new ArrayList<>();
                 if (availableOrbits.isEmpty()) {
                     availableOrbits.addAll(newWorld.getInnerOrbits());
                 }
                 for (Integer orbit : availableOrbits) {
                     for (int counter2 = 0; counter2 < orbit; counter2++) {
-                        orbitList.add(orbit);
+                        orbitSet.add(orbit);
                     }
                 }
 
-                int listIndex = rng.nextInt(orbitList.size());
-                int orbitNum = orbitList.get(listIndex);
+                int listIndex = rng.nextInt(orbitSet.size());
+                int orbitNum = orbitSet.get(listIndex);
                 Planet gg = new GasGiant();
                 newWorld.getOrbits().put(orbitNum, gg);
                 availableOrbits.remove(orbitNum);
@@ -214,14 +212,14 @@ public class StarSystemMaker {
                     availableOrbits.addAll(newWorld.getInnerOrbits());
                 }
                 for (Integer orbit : availableOrbits) {
-                    int probablity = orbit;
+                    int probibility = orbit;
                     if (newWorld.getOrbits().containsKey(orbit + 1) &&
-                        (newWorld.getOrbits().get(orbit + 1).getPlanetType() == Planet.Type.LARGE_GAS_GIANT ||
-                         newWorld.getOrbits().get(orbit + 1).getPlanetType() == Planet.Type.SMALL_GAS_GIANT)) {
-                        probablity *= 2;
+                            (newWorld.getOrbits().get(orbit + 1).getPlanetType() == Planet.Type.LARGE_GAS_GIANT ||
+                                    newWorld.getOrbits().get(orbit + 1).getPlanetType() == Planet.Type.SMALL_GAS_GIANT)) {
+                        probibility *= 2;
 
                     }
-                    for (int counter2 = 0; counter2 < probablity; counter2++) {
+                    for (int counter2 = 0; counter2 < probibility; counter2++) {
                         orbitList.add(orbit);
                     }
                 }
@@ -244,22 +242,36 @@ public class StarSystemMaker {
         all.addAll(newWorld.getOuterOrbits());
 
         List<Integer> unoccupied = new ArrayList();
-				hz.removeAll(newWorld.getOrbits());
-        
-				if (hz.isEmpty()) {
+        hz.removeAll(newWorld.getOrbits().keySet());
+
+        if (hz.isEmpty()) {
             hz = ImmutableSet.copyOf(all);
         }
 
-				hz.removeAll(newWorld.getOrbits());
+        hz.removeAll(newWorld.getOrbits().keySet());
 
-				Boolean mainWorldIsSatellite = hz.isEmpty();
-				if (mainWorldIsSatellite) {
+        Boolean mainWorldIsSatellite = hz.isEmpty();
+        if (mainWorldIsSatellite) {
+            List<Planet> gasGiantList = new ArrayList<>();
+            for (Planet p : newWorld.getOrbits().values()) {
+                if (p.getPlanetType() == Planet.Type.LARGE_GAS_GIANT) {
+                    p.createOrbits(roll(rng));
+                }
+                if (p.getPlanetType() == Planet.Type.SMALL_GAS_GIANT) {
+                    gasGiantList.add(p);
+                }
+            }
 
-				} else {
-          Integer mainWorldOrbit = hz.get(rng.nextInt(unoccupied.size()));
-          newWorld.getOrbits().put(mainWorldOrbit, newWorld.getMainWorld());
-				}
-				
+            Planet centralPlanet = gasGiantList.get(rng.nextInt(gasGiantList.size()));
+            int numberOfSatelliteOrbits = 0;
+
+
+        } else {
+            List<Integer> habitableList = new ArrayList<>(hz);
+            Integer mainWorldOrbit = habitableList.get(rng.nextInt(hz.size()));
+            newWorld.getOrbits().put(mainWorldOrbit, newWorld.getMainWorld());
+        }
+
 
 //        10. Determine rtar system details.
 //A. Svrrem nature Irolitary, binary,

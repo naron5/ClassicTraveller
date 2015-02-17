@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.Null;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -14,14 +15,20 @@ import java.util.Random;
 public class Planet {
     final static String PREFIX = "PSR ";
 
-    private double maxLand = 0.2;
-    private double minLand = 0.2;
-    private double water = 0.02;
-    private double maxIce = 0.85;
-    private double maxCloud = 0.8;
-    private double minIce = 0.55;
-    private double minCloud = 0.4;
+    private static final double maxLand = 0.2;
+    private static final double minLand = 0.2;
+    private static final double water = 0.02;
+    private static final double maxIce = 0.85;
+    private static final double maxCloud = 0.8;
+    private static final double minIce = 0.55;
+    private static final double minCloud = 0.4;
 
+
+    private int maxOrbits = 0;
+
+    @Getter
+    @Setter(AccessLevel.PROTECTED)
+    private HashMap<Integer, Planet> satellites = new HashMap<>();
 
     @Getter
     @Setter(AccessLevel.PROTECTED)
@@ -191,6 +198,11 @@ public class Planet {
 
         }
         return cloudiness;
+    }
+
+    public void createOrbits(int number) {
+        maxOrbits = 0;
+
     }
 
     public enum Type {
