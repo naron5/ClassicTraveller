@@ -6,7 +6,9 @@ import lombok.Setter;
 
 import javax.validation.constraints.Null;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @author markknights
@@ -33,9 +35,11 @@ public class Planet {
     @Getter
     @Setter(AccessLevel.PROTECTED)
     protected String sector;
+
     @Getter
     @Setter(AccessLevel.PROTECTED)
     protected String subsector;
+
     @Getter
     @Setter(AccessLevel.PROTECTED)
     protected String name;
@@ -43,14 +47,13 @@ public class Planet {
     @Getter
     @Setter(AccessLevel.PROTECTED)
     protected int hexLocation;
+
     @Getter
     @Setter(AccessLevel.PROTECTED)
     protected UniversalPlanetaryProfile profile;
-    @Getter
-    @Setter(AccessLevel.PROTECTED)
+
     protected boolean navalBase;
-    @Getter
-    @Setter(AccessLevel.PROTECTED)
+
     protected boolean scoutBase;
 
     protected double getMinimumGreenhouse() {
@@ -205,6 +208,7 @@ public class Planet {
 
     }
 
+
     public enum Type {
         ROCKY_PLANET, PLANETOID_BELT, LARGE_GAS_GIANT, SMALL_GAS_GIANT
     }
@@ -282,5 +286,20 @@ public class Planet {
         else
             return Type.ROCKY_PLANET;
     }
+
+
+    public boolean getNavalBase() {
+        return navalBase;
+    }
+
+    public void setNavalBase(boolean val){ navalBase = val;}
+
+    public boolean getScoutBase() {
+        return scoutBase;
+    }
+
+
+    public void setScoutBase(boolean val){ scoutBase = val;}
+
 
 }

@@ -7,6 +7,8 @@ import javax.validation.constraints.Null;
  */
 public class GasGiant extends Planet {
 
+    private Type planetType = Type.SMALL_GAS_GIANT;
+
     /**
      * Produces an unnamed, unidentified planet
      */
@@ -14,7 +16,7 @@ public class GasGiant extends Planet {
         name = "Unnamed";
         profile = new UniversalPlanetaryProfile(Starport.C, 7, 7, 7, 7, 7, 7);
         hexLocation = -1;
-        planetType = Type.ROCKY_PLANET;
+
 
     }
 
@@ -60,4 +62,9 @@ public class GasGiant extends Planet {
     }
 
 
+
+    @Override
+    public Type getPlanetType() {
+        return planetType;
+    }
 }

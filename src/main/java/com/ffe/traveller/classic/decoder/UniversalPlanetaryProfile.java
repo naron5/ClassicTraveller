@@ -23,6 +23,10 @@ import javax.ws.rs.FormParam;
 
 public class UniversalPlanetaryProfile {
 
+		public static final Integer SizeR = -1;
+		public static final Integer SizeS = Integer.MIN_VALUE;
+
+
     @Getter
     @Setter(AccessLevel.PROTECTED)
     private Integer diameter;

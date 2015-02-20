@@ -1,7 +1,6 @@
 package com.ffe.traveller.classic.decoder;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.UnmodifiableIterator;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +18,11 @@ import java.util.Set;
 public class StarSystem {
 
     private static final double K_temp = 374.025;
+
+
+    public enum Zone {
+        INNER, HABITABLE, OUTER
+    }
 
     @Getter
     @Setter(AccessLevel.PROTECTED)
@@ -141,8 +145,6 @@ public class StarSystem {
 
         return ImmutableSet.copyOf(rv);
     }
-
-
 
 
     public Integer getMainWorldOrbit() {

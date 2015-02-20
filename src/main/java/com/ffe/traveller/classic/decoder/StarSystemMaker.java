@@ -2,7 +2,6 @@ package com.ffe.traveller.classic.decoder;
 
 import com.ffe.traveller.util.Utility;
 import com.google.common.collect.ImmutableSet;
-import lombok.Getter;
 
 import javax.validation.constraints.Null;
 import java.util.*;
@@ -272,98 +271,28 @@ public class StarSystemMaker {
             newWorld.getOrbits().put(mainWorldOrbit, newWorld.getMainWorld());
         }
 
+        Set<Integer> remainingOrbits = new HashSet<>();
 
-//        10. Determine rtar system details.
-//A. Svrrem nature Irolitary, binary,
-//01 trinaw star ryrtem).
-//8. Pllmaw rtar type and rile.
-//*/
-//
-//DMM if main world has population 8+
-//or atmosphere 4 .9.
-//C. Companion star type and rize.
-//D. Cmpanion orbit.
-//E. Number of orbits availaMe for
-//ash star.
-//F. Unavailable, inner, habitable.
-//nd mter zones within the rymm.
-//G. Captured planets and empty
-//abin. -- .
-//H. Presence and quantity of gar
-//gime.
-//I. Pmnce and quantity of
-//planetoid bele.
-//11. Plke known components.
-//A. Place gar giants.
-//B. Place planetoid belts.
-//C. Plan main world in habitable
-//mne.
-//12. Generate worlds within system.
-//A. Orbit Locat80n.
-//6. Size: 2D-2. For orbit 0. DM-5;
-//for orbit 1. DM-4; for orbit 2. DM-2.
-//If type M rtar. DM-2 for all orbits. If
-//~. -
-//C. Atmosphere: 2D-7 + size. If
-//inner zone. DM-2: if outer rone, DM-4.
-//If rim 0 or S, then atmarhere 0. If
-//outer zone+2, throw 12 for A.
-//D. Hydrographicr: 2D-7 +size. If
-//innsr rons. then 0: outer zone, DM-?.
-//If sire 1- or S. then hydrographin 0.
-//If maphere 1- or A+. DM-4.
-//E. Pqulation: 20-2. If inner
-//zone, DM-5:if outer rone. DM-3. If not
-//atmosphere 0.5.6. or 8, DM-2. If equal
-//to or greater than main world. then
-//reduce to main world minur 1.
-//13. Determine number of ratelliter
-//for esh planet, or gar giant in the
-//system. Disregard planetoid bele and
-//size S woddl.
-//A. Plmets: 10-3.
-//6. Small gar giants: 2D-4.
-//C. Large gar giants: 20.
-//14. Generateratelliter within ryrtwn.
-//A. Size: Planetaw rize -lD. For
-//larv gar giant. 2D-4. For small gar
-//giant, 2D-6. If rize 0. use R. If size lerr
-//than 0, use S.
-//8. Orbit LMim.
-//C. Atmosphere: 2D-7 + satellite
-//size. If inner zone. DM -4. If outer
-//rone. DM -4. If sire I-, then 0. If outer
-//zone +2, throw 12 for A.
-//D. Hydropraphin: 2D-7 + ratellite
-//size. If inner zone. then 0: if wter
-//rons. DM-4. If size 0-. then 0. If atmo.
-//sphere 1- or A+, DM-4.
-//E. Population: 2D-2. If inner
-//zone, DM-5: if outer zone. DM -4. If
-//atmosphere not 5. 6, or 8. DM-2. If
-//sire 4-. DM-2. If ring. than 0. If equal
-//to or greater than main world, then
-//reduce to main world minur 1.
-//15. Determine additional planet and
-//satellite characteristin.
-//A. Subordinate Government: ID.
-//DM +2 if main world government 7t.
-//Equalr 6 if main world wvernment 5.
-//8. Subordinate Law Level: 10-3
-//+main world law level.
-//C. Note subordinate fkilitier.
-//D. Subordinate Tech Level: Main
-//world lewl -1. Equalr main world level
-//if rerearch lab or m8litary bare preunt.
-//E. Spaceport Type.
-//16. Record Itatlstin and data.
-//A. Map data on rubsector grid.
-//8. Note main world data on
-//rubrector data form.
-//C. Note complete System data on
+        remainingOrbits.addAll(newWorld.getInnerOrbits());
+        remainingOrbits.addAll(newWorld.getHabitableOrbits());
+        remainingOrbits.addAll(newWorld.getOuterOrbits());
+        remainingOrbits.removeAll(newWorld.getOrbits().keySet());
 
 
-        return CreateStarSystem();
+        for (Integer orbit : remainingOrbits) {
+            Zone z = Zone.INNER;
+            if (newWorld.getHabitableOrbits().contains(orbit)) {
+                z = Zone.HABITABLE;
+            }
+            if (newWorld.getOuterOrbits().contains(orbit)) {
+                z = Zone.OUTER;
+            }
+            newWorld.getOrbits().put(orbit, MinorPlanetMaker.CreateMinorPlanet(rng, z, newWorld.getMainWorld()));
+
+        }
+
+
+        return newWorld;
     }
 
     private static Star generateCompanionStar(@Null Random rng, int classMod, int sizeRoll, Star.StarPosition position) {
@@ -557,13 +486,5 @@ public class StarSystemMaker {
         }
         return map;
     }
-
-
-    private static double lookupLuminosity(Star s) {
-        double lum = 0.0;
-
-        return lum;
-    }
-
 
 }
