@@ -19,8 +19,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.AccessLevel;
 
-import javax.ws.rs.FormParam;
-
 public class UniversalPlanetaryProfile {
 
 		public static final Integer SizeR = -1;
@@ -41,13 +39,13 @@ public class UniversalPlanetaryProfile {
     private Integer population;
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private Integer planGov;
+    private Integer government;
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private Integer lawLevel;
+    private Integer law_level;
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private Integer techLev;
+    private Integer technological_level;
 
     @Getter
     @Setter(AccessLevel.PROTECTED)
@@ -70,8 +68,8 @@ public class UniversalPlanetaryProfile {
         atmosphere = atmos;
         hydro = water;
         population = pop;
-        planGov = gov;
-        lawLevel = law;
+        government = gov;
+        law_level = law;
 
     }
 
@@ -83,9 +81,9 @@ public class UniversalPlanetaryProfile {
         atmosphere = atmos;
         hydro = water;
         population = pop;
-        planGov = gov;
-        lawLevel = law;
-        techLev = tech;
+        government = gov;
+        law_level = law;
+        technological_level = tech;
 
     }
 
@@ -140,14 +138,14 @@ public class UniversalPlanetaryProfile {
     public String Government() {
 
         ArrayList<String> govArray = (ArrayList<String>) propertyMap.get("Government");
-        return govArray.get(planGov);
+        return govArray.get(government);
     }
 
     @SuppressWarnings("unchecked")
     public String LawLevel() {
 
         ArrayList<String> lawArray = (ArrayList<String>) propertyMap.get("LawLevel");
-        return lawArray.get(lawLevel);
+        return lawArray.get(law_level);
 
     }
 
@@ -202,14 +200,14 @@ public class UniversalPlanetaryProfile {
         }
 
         // Government effects
-        if (planGov == 0 || planGov == 5) {
+        if (government == 0 || government == 5) {
             level += 1;
-        } else if (planGov == 13) {
+        } else if (government == 13) {
             level -= 2;
         }
 
 
-        this.techLev = level < 1 ? 1 : level;
+        this.technological_level = level < 1 ? 1 : level;
 
 
     }
@@ -235,7 +233,7 @@ public class UniversalPlanetaryProfile {
 
         // Financial
         if ((atmosphere == 6 || atmosphere == 8) && (population > 5 && population < 9)
-                && (planGov > 3 && planGov < 10)) {
+                && (government > 3 && government < 10)) {
             tradeClassifications.add(TradeClassifications.Rich);
         } else if ((atmosphere > 1 && atmosphere < 6) && hydro < 4) {
             tradeClassifications.add(TradeClassifications.Poor);

@@ -89,6 +89,8 @@ public class UniversalPlanetaryProfileMaker {
             int modifier = (planetAtmosphere < 2 || planetAtmosphere > 9) ? -11 : -7;
             hydroPercent = rollDiceWithModifier(2, modifier + planetAtmosphere);
             hydroPercent = hydroPercent > 10 ? 10 : hydroPercent;
+            hydroPercent = hydroPercent < 0 ? 0 : hydroPercent;
+
         }
 
         if (population == null) {

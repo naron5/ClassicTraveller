@@ -19,7 +19,7 @@ public class MinorPlanetMaker {
         int hydro = rollDiceWithModifier(rng, 2, -7) + size;
         int pop = rollDiceWithModifier(rng, 2, -2);
         int gov = rollDiceWithModifier(rng, 1, 0);
-        int law = rollDiceWithModifier(rng, 1, -3) + mainPlanet.getProfile().getLawLevel();
+        int law = rollDiceWithModifier(rng, 1, -3) + mainPlanet.getProfile().getLaw_level();
         switch (zone) {
             case INNER:
                 atmo -= 4;
@@ -52,9 +52,12 @@ public class MinorPlanetMaker {
             pop = 0;
         }
 
-        if (mainPlanet.getProfile().getPlanGov() == 6) {
+        if(pop < 0){
+            pop =0;
+        }
+        if (mainPlanet.getProfile().getGovernment() == 6) {
             gov += pop;
-        } else if (mainPlanet.getProfile().getPlanGov() >= 7) {
+        } else if (mainPlanet.getProfile().getGovernment() >= 7) {
             gov += 1;
         }
 
@@ -84,21 +87,35 @@ public class MinorPlanetMaker {
             law = 0;
         }
 
+        if (size == 0) {
+            size = Planet.Ring;
+        } else if (size < 0) {
+            size = Planet.Small;
+        }
+
+        if (atmo < 0) {
+            atmo = 0;
+        }
+
+        if (hydro < 0) {
+            hydro = 0;
+        }
+
         UniversalPlanetaryProfile upp = UniversalPlanetaryProfileMaker.CreateUniversalPlanetaryProfile(
                 port, size, atmo, hydro, pop, gov, law
         );
         s.setProfile(upp);
         s.setTradeClassifications(calculateTradeClassifications(rng, upp, mainPlanet, zone));
 
-        int techLevel = mainPlanet.getProfile().getTechLev() - 1;
+        int techLevel = mainPlanet.getProfile().getTechnological_level() - 1;
         if (s.getTradeClassifications().contains(TradeClassifications.Military)) {
-            techLevel = mainPlanet.getProfile().getTechLev();
+            techLevel = mainPlanet.getProfile().getTechnological_level();
         }
         int mainWorldAtmosphere = mainPlanet.getProfile().getAtmosphere();
         if (techLevel < 7 && !(mainWorldAtmosphere == 5 || mainWorldAtmosphere == 6 || mainWorldAtmosphere == 8)) {
             techLevel = 7;
         }
-        s.getProfile().setTechLev(techLevel);
+        s.getProfile().setTechnological_level(techLevel);
         return s;
     }
 
@@ -108,7 +125,7 @@ public class MinorPlanetMaker {
         int atmosphere = profile.getAtmosphere();
         int hydro = profile.getHydro();
         int population = profile.getPopulation();
-        int planGov = profile.getPlanGov();
+        int planGov = profile.getGovernment();
 
         Set<TradeClassifications> tradeClassifications = new HashSet<>();
 
@@ -137,10 +154,10 @@ public class MinorPlanetMaker {
             tradeClassifications.add(TradeClassifications.Poor);
         }
 
-        int mod = mainWorld.getProfile().getTechLev() >= 10 ? 2 : 0;
+        int mod = mainWorld.getProfile().getTechnological_level() >= 10 ? 2 : 0;
 
         if (rollDiceWithModifier(rng, 2, mod) >= 10) {
-            if (mainWorld.getProfile().getTechLev() >= 8 && population > 0) {
+            if (mainWorld.getProfile().getTechnological_level() >= 8 && population > 0) {
                 tradeClassifications.add(TradeClassifications.Research);
             }
         }
@@ -168,4 +185,5 @@ public class MinorPlanetMaker {
 
         return tradeClassifications;
     }
+
 }

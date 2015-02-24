@@ -4,7 +4,6 @@
 package com.ffe.traveller.classic.trade;
 
 
-import com.ffe.traveller.classic.decoder.Planet;
 import com.ffe.traveller.classic.decoder.StarSystem;
 import com.ffe.traveller.classic.decoder.TravelZone;
 
@@ -316,7 +315,7 @@ public class ClassicTravellerPassenger {
 			dieMod -= 6;
 		}
 		
-		dieMod += from.getProfile().getTechLev() - to.getProfile().getTechLev();
+		dieMod += from.getProfile().getTechnological_level() - to.getProfile().getTechnological_level();
 		
 	}
 	

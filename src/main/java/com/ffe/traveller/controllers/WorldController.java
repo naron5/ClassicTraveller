@@ -21,32 +21,25 @@ public class WorldController extends HttpServlet {
 
 
     @GET
-    @Path("/world")
+    @Path("/starsystem")
     @Produces(MediaType.APPLICATION_JSON)
-    public Planet[] searchAllWorlds(@PathParam("ruleSet") String rules,
-                                                     @QueryParam("sector") String sector,
-                                                     @QueryParam("subsector") String subsector,
-                                                     @QueryParam("hex") String hex,
-                                                     @QueryParam("upp") String UPPs) {
-        String output = "Jersey say : " + rules + " " + sector + " " + subsector + " " + hex + " " + UPPs;
-        System.out.println(output);
+    public StarSystem searchAllWorlds(@PathParam("ruleSet") String rules,
+                                      @QueryParam("sector") String sector,
+                                      @QueryParam("subsector") String subsector,
+                                      @QueryParam("hex") String hex,
+                                      @QueryParam("upp") String UPPs) {
         Client esClient = TravellerApp.ElasticSearchClient();
-        UniversalPlanetaryProfile upp = UniversalPlanetaryProfileMaker.CreateUniversalPlanetaryProfile(
-                Starport.C, 7, 7, 7, 7, 7, 7
-        );
 
-        Planet p = PlanetMaker.CreatePlanet(null,null,null,null,null);
+        Planet p = PlanetMaker.CreatePlanet(null, null, null, null, null, null, null, null, null, null, null, null, null);
 
-        Planet[] arr = new Planet[1];
-        arr[0] = p;
-        return arr;
+        return StarSystemMaker.CreateStarSystem(null, p);
 
     }
 
     @PUT
-    @Path("/world")
+    @Path("/starsystem")
     @Produces(MediaType.APPLICATION_JSON)
-    public IndexResponse writeWorld(@Valid Planet planet) throws Exception {
+    public IndexResponse writeWorld(@Valid StarSystem system) throws Exception {
 
         Client esClient = TravellerApp.ElasticSearchClient();
 
@@ -54,25 +47,46 @@ public class WorldController extends HttpServlet {
         IndexResponse response = null;
 
 
-        response = esClient.prepareIndex("traveller", "world").setSource(mapper.writeValueAsString(planet)).execute().get();
+        response = esClient.prepareIndex("traveller", "world").setSource(mapper.writeValueAsString(system)).execute().get();
 
         return response;
-
 
 
     }
 
     @PUT
-    @Path("/world/generate")
+    @Path("/starsystem/generate")
     @Produces(MediaType.APPLICATION_JSON)
-    public StarSystem generateWorld(@Valid Planet planet) {
+    public StarSystem generateWorld() {
 
 
-        StarSystem newStarSystem = StarSystemMaker.CreateStarSystem(planet);
+        StarSystem newStarSystem = StarSystemMaker.CreateStarSystem();
 
         return newStarSystem;
     }
 
+    @PUT
+    @Path("/starsystem/generate/planet")
+    @Produces(MediaType.APPLICATION_JSON)
+    public StarSystem generateWorld(Planet planet) {
 
+
+        StarSystem newStarSystem = StarSystemMaker.CreateStarSystem(null, planet);
+
+        return newStarSystem;
+    }
+
+    @PUT
+    @Path("/starsystem/generate/profile")
+    @Produces(MediaType.APPLICATION_JSON)
+    public StarSystem generateWorld(UniversalPlanetaryProfile upp) {
+
+        Planet planet = PlanetMaker.CreatePlanet(null, null, null, null, null,
+                upp.getDiameter(), upp.getAtmosphere(), upp.getHydro(), upp.getPopulation(),
+                upp.getGovernment(), upp.getLaw_level(), null, null);
+        StarSystem newStarSystem = StarSystemMaker.CreateStarSystem(null, planet);
+
+        return newStarSystem;
+    }
 
 }

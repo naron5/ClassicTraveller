@@ -1,11 +1,13 @@
 package com.ffe.traveller.classic.decoder;
 
 import com.ffe.traveller.util.Utility;
-import com.google.common.collect.ImmutableSet;
 
 import javax.validation.constraints.Null;
 import java.util.*;
 
+import static com.ffe.traveller.classic.decoder.PlanetMaker.CreateGasGiant;
+import static com.ffe.traveller.classic.decoder.PlanetMaker.CreatePlanet;
+import static com.ffe.traveller.classic.decoder.PlanetMaker.CreateMinorPlanet;
 import static com.ffe.traveller.classic.decoder.Star.StellarClass.*;
 import static com.ffe.traveller.classic.decoder.Star.StellarSize.*;
 import static com.ffe.traveller.classic.decoder.Star.StarPosition.*;
@@ -24,14 +26,22 @@ public class StarSystemMaker {
 
 
     public static StarSystem CreateStarSystem() {
-        return new StarSystem();
+        Random rng = new Random();
+        Planet p = CreatePlanet(rng, null, null, null, null, null, null, null, null, null, null, null, null);
+        return CreateStarSystem(rng, p);
     }
 
-    public static StarSystem CreateStarSystem(Planet planet) {
-        String hashSeed = planet.getSector() + "|" + planet.getSubsector()
-                + "|" + (new Integer(planet.getHexLocation())).toString();
-        Random rng = new Random(Utility.getSHA256(hashSeed));
-
+    public static StarSystem CreateStarSystem(@Null Random random, Planet planet) {
+        Random rng = random;
+        if (random == null) {
+            String hashSeed = planet.getSector() + "|" + planet.getSubsector()
+                    + "|" + (new Integer(planet.getHexLocation())).toString();
+            if (!hashSeed.equals("||")) {
+                rng = new Random(Utility.getSHA256(hashSeed));
+            } else {
+                rng = new Random();
+            }
+        }
 
 //        11. Place known components.
 //                A. Place gas giants.
@@ -54,7 +64,7 @@ public class StarSystemMaker {
 //                E. Number of orbits available for
 //        each star.
         newWorld.setStars(generateStars(rng, planet.getProfile().getPopulation(), planet.getProfile().getAtmosphere()));
-
+        Star centralStar = newWorld.getStars().get(PRIMARY);
 //        F. Unavailable, inner, habitable,
 //                and outer zones within the system.
         switch (newWorld.getStars().get(PRIMARY).getStarSize()) {
@@ -65,24 +75,24 @@ public class StarSystemMaker {
             case II:
                 orbitRoll += 8;
         }
-        switch (newWorld.getStars().get(PRIMARY).getAClass()) {
+        switch (newWorld.getStars().get(PRIMARY).getStellarClass()) {
             case M:
                 orbitRoll -= 4;
             case K:
                 orbitRoll -= 2;
         }
 
-        int orbits = orbitRoll > 0 ? orbitRoll : 0;
+        int orbits = orbitRoll > 0 ? orbitRoll : 1;
 
-        newWorld.setMaxOrbits(orbits);
+        newWorld.setMaxOrbits(19);
 
 
         Set<Integer> empty = new HashSet<>();
 
         int emptyRoll = rollDice(rng, 1);
         int numberEmptyRoll = rollDice(rng, 1);
-        if (newWorld.getStars().get(PRIMARY).getAClass() == B ||
-                newWorld.getStars().get(PRIMARY).getAClass() == A) {
+        if (newWorld.getStars().get(PRIMARY).getStellarClass() == B ||
+                newWorld.getStars().get(PRIMARY).getStellarClass() == A) {
             emptyRoll += 1;
             numberEmptyRoll += 1;
         }
@@ -102,15 +112,12 @@ public class StarSystemMaker {
         }
 
         while (empty.size() < numberEmpty) {
-            int emptyOrbit = roll(rng);
-            if (emptyOrbit < newWorld.getMaxOrbits()) {
-                empty.add(emptyOrbit);
-            }
+            empty.add(roll(rng));
         }
 
 
-        Set<Integer> availableOrbits = new HashSet(newWorld.getHabitableOrbits());
-        availableOrbits.addAll(newWorld.getOuterOrbits());
+        Set<Integer> availableOrbits = new HashSet(centralStar.getHabitableOrbits());
+        availableOrbits.addAll(centralStar.getOuterOrbits());
         availableOrbits.removeAll(empty);
 
 //                G. Captured planets and empty
@@ -155,7 +162,7 @@ public class StarSystemMaker {
             for (int counter = 0; counter < numberOfGasGiants; counter++) {
                 List<Integer> orbitSet = new ArrayList<>();
                 if (availableOrbits.isEmpty()) {
-                    availableOrbits.addAll(newWorld.getInnerOrbits());
+                    availableOrbits.addAll(centralStar.getInnerOrbits());
                 }
                 for (Integer orbit : availableOrbits) {
                     for (int counter2 = 0; counter2 < orbit; counter2++) {
@@ -165,8 +172,9 @@ public class StarSystemMaker {
 
                 int listIndex = rng.nextInt(orbitSet.size());
                 int orbitNum = orbitSet.get(listIndex);
-                Planet gg = new GasGiant();
-                newWorld.getOrbits().put(orbitNum, gg);
+                Zone z = centralStar.getZone(orbitNum);
+
+                newWorld.getOrbits().put(orbitNum, CreateGasGiant(rng, z, planet));
                 availableOrbits.remove(orbitNum);
 
             }
@@ -208,7 +216,7 @@ public class StarSystemMaker {
             for (int counter = 0; counter < numberOfPlanetoidBelts; counter++) {
                 List<Integer> orbitList = new ArrayList<>();
                 if (availableOrbits.isEmpty()) {
-                    availableOrbits.addAll(newWorld.getInnerOrbits());
+                    availableOrbits.addAll(centralStar.getInnerOrbits());
                 }
                 for (Integer orbit : availableOrbits) {
                     int probibility = orbit;
@@ -225,7 +233,7 @@ public class StarSystemMaker {
 
                 int listIndex = rng.nextInt(orbitList.size());
                 int orbitNum = orbitList.get(listIndex);
-                Planet pb = PlanetMaker.CreatePlanet(null, null, null, 0, null, null, null, null, null, null, null, null);
+                Planet pb = CreatePlanet(rng, null, null, null, 0, null, null, null, null, null, null, null, null);
                 newWorld.getOrbits().put(orbitNum, pb);
                 availableOrbits.remove(orbitNum);
             }
@@ -234,17 +242,19 @@ public class StarSystemMaker {
 
 
         // Place Mainworld
-        Set<Integer> hz = newWorld.calculateHabitableZone(planet);
+        Set<Integer> hz = new HashSet();
+        hz.addAll(newWorld.getStars().get(Star.StarPosition.PRIMARY).calculateHabitableZone(planet));
+
         Set<Integer> all = new HashSet();
-        all.addAll(newWorld.getInnerOrbits());
-        all.addAll(newWorld.getHabitableOrbits());
-        all.addAll(newWorld.getOuterOrbits());
+        all.addAll(centralStar.getInnerOrbits());
+        all.addAll(centralStar.getHabitableOrbits());
+        all.addAll(centralStar.getOuterOrbits());
 
         List<Integer> unoccupied = new ArrayList();
         hz.removeAll(newWorld.getOrbits().keySet());
 
         if (hz.isEmpty()) {
-            hz = ImmutableSet.copyOf(all);
+            hz.addAll(all);
         }
 
         hz.removeAll(newWorld.getOrbits().keySet());
@@ -273,21 +283,21 @@ public class StarSystemMaker {
 
         Set<Integer> remainingOrbits = new HashSet<>();
 
-        remainingOrbits.addAll(newWorld.getInnerOrbits());
-        remainingOrbits.addAll(newWorld.getHabitableOrbits());
-        remainingOrbits.addAll(newWorld.getOuterOrbits());
+        remainingOrbits.addAll(centralStar.getInnerOrbits());
+        remainingOrbits.addAll(centralStar.getHabitableOrbits());
+        remainingOrbits.addAll(centralStar.getOuterOrbits());
         remainingOrbits.removeAll(newWorld.getOrbits().keySet());
 
 
         for (Integer orbit : remainingOrbits) {
             Zone z = Zone.INNER;
-            if (newWorld.getHabitableOrbits().contains(orbit)) {
+            if (centralStar.getHabitableOrbits().contains(orbit)) {
                 z = Zone.HABITABLE;
             }
-            if (newWorld.getOuterOrbits().contains(orbit)) {
+            if (centralStar.getOuterOrbits().contains(orbit)) {
                 z = Zone.OUTER;
             }
-            newWorld.getOrbits().put(orbit, MinorPlanetMaker.CreateMinorPlanet(rng, z, newWorld.getMainWorld()));
+            newWorld.getOrbits().put(orbit, CreateMinorPlanet(rng, centralStar, orbit, z, newWorld.getMainWorld()));
 
         }
 
@@ -301,7 +311,7 @@ public class StarSystemMaker {
         int rollOrbit = roll(rng);
         int orbitRoll = roll(rng);
 
-        int orbit = CENTER;
+        int orbit = Star.CENTER;
         Star.StellarClass sClass = M;
         Star.StellarSize sSize = D;
         int orbits = 0;
@@ -363,9 +373,9 @@ public class StarSystemMaker {
         }
 
         if (rollOrbit < 4) {
-            orbit = NEAR_ORBIT;
+            orbit = Star.NEAR_ORBIT;
         } else if (rollOrbit == 12) {
-            orbit = FAR_ORBIT;
+            orbit = Star.FAR_ORBIT;
         } else {
             orbit = rollOrbit - 3;
             if (rollOrbit > 6) {
@@ -474,8 +484,15 @@ public class StarSystemMaker {
 
         }
 
+        if (sClass == M && sSize == IV) {
+            sSize = V;
+        }
 
-        map.put(PRIMARY, new Star(sClass, sSize, CENTER));
+        if ((sClass == B || sClass == A || sClass == F) && sSize == VI) {
+            sSize = V;
+        }
+
+        map.put(PRIMARY, new Star(sClass, sSize, Star.CENTER));
 
         if (star > BINARY) {
             map.put(SECONDARY, generateCompanionStar(rng, rollClass, rollSize, SECONDARY));

@@ -1,14 +1,12 @@
 package com.ffe.traveller.classic.decoder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.Null;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author markknights
@@ -25,12 +23,14 @@ public class Planet {
     private static final double minIce = 0.55;
     private static final double minCloud = 0.4;
 
+    public static final int Ring = 0;
+    public static final int Small = -1;
 
     private int maxOrbits = 0;
 
     @Getter
     @Setter(AccessLevel.PROTECTED)
-    private HashMap<Integer, Planet> satellites = new HashMap<>();
+    private Map<Integer, Planet> satellites = new HashMap<>();
 
     @Getter
     @Setter(AccessLevel.PROTECTED)
@@ -112,6 +112,7 @@ public class Planet {
         return maxG;
     }
 
+    @JsonIgnore
     public double getMaximumAlbedo() {
         double percWater = profile.getHydro() / 10.0;
         double percLand = 1 - percWater;
@@ -136,6 +137,7 @@ public class Planet {
 
     }
 
+    @JsonIgnore
     public double getMinimumAlbedo() {
         double percWater = profile.getHydro() / 10.0;
         double percLand = 1 - percWater;
@@ -263,8 +265,13 @@ public class Planet {
         }
 
         profile = upp;
-        navalBase = naval;
-        scoutBase = scout;
+        if(naval != null) {
+            navalBase = naval;
+        }
+
+        if(scout != null) {
+            scoutBase = scout;
+        }
     }
 
     /**
