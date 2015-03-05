@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
-
 /**
  * Created by darkmane on 1/13/15.
  */
@@ -40,10 +39,10 @@ public class TravellerApp extends ResourceConfig {
 
     public static Client ElasticSearchClient() {
         if (client == null) {
-            TransportClient cl = new TransportClient();
-            InetSocketTransportAddress addr = new InetSocketTransportAddress(properties.getProperty("elastic_search.server"),
-                    Integer.parseInt(properties.getProperty("elastic_search.port")));
-            cl.addTransportAddress(addr);
+            TransportClient cl = new TransportClient().addTransportAddress(new InetSocketTransportAddress(
+                    properties.getProperty("elastic_search.server"),
+                    Integer.parseInt(properties.getProperty("elastic_search.port"))));
+
             client = cl;
         }
 

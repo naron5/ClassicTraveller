@@ -169,7 +169,7 @@ public class ClassicCargoTrade {
 			dieMod += 1;
 		}
 		
-		dieMod += from.getProfile().getTechLev() - to.getProfile().getTechLev();
+		dieMod += from.getProfile().getTechnological_level() - to.getProfile().getTechnological_level();
 		
 	}
 

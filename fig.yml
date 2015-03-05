@@ -5,9 +5,19 @@ travellerApp:
     - travellerDb:mongo.darkmane.me
 travellerDb:
   image: dockerfile/mongodb
+  ports:
+    - "27017:27017"
+    - "28017:28017"
+  expose:
+    - "27017"
+    - "28017"
 travellerElasticSearch:
   image: dockerfile/elasticsearch
+  ports:
+    - "9200:9200"
+    - "9300:9300"
   expose:
-    - "9600"
-  ports: 
-    - "9600:9600"
+    - "9200"
+    - "9300"
+  volumes:
+    - elasticsearch:/data
