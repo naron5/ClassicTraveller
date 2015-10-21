@@ -4,8 +4,9 @@
     <groupId>ClassicTraveller</groupId>
     <artifactId>ClassicTraveller</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <properties>
+        <project.sourceVersion>1.8</project.sourceVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jettyVersion>7.2.0.v20101020</jettyVersion>
         <jerseyVersion>2.6</jerseyVersion>
@@ -34,8 +35,11 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <includes>
+                        <include>src/main/java/**/*.java</include>
+                    </includes>
+                    <source>${project.sourceVersion}</source>
+                    <target>${project.sourceVersion}</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -98,6 +102,11 @@
                 <configuration>
                     <mainClass>org.example.HelloWorld</mainClass>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
             </plugin>
         </plugins>
     </build>
