@@ -1,0 +1,34 @@
+travellerApp:
+  image: tomcat:%%tomcat%%
+  links:
+    - travellerElasticSearch:elastic-search.darkmane.me
+    - travellerDb:mongo.darkmane.me
+travellerDb:
+  image: mongo:%%mongo%%
+  ports:
+    - "27017:27017"
+    - "28017:28017"
+  expose:
+    - "27017"
+    - "28017"
+travellerElasticSearch:
+  image: elasticsearch:%%elasticsearch%%
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+  expose:
+    - "9200"
+    - "9300"
+  volumes:
+    - elasticsearch:/data
+travellerdebug:
+  build: .
+  dockerfile: Dockerfile-debug
+  ports:
+    - "8080:8080"
+    - "8000:8000"
+  volumes:
+    - ./target:/code
+  links:
+    - travellerElasticSearch:elastic-search.darkmane.me
+    - travellerDb:mongo.darkmane.me
